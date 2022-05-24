@@ -18,8 +18,8 @@ export const SendEther: ICommand = {
         .setName("network")
         .setDescription("Select Blockchain network")
         .setRequired(true)
-        .addChoice("Mainnet", "mainnet")
-        .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Ethereum", "mainnet")
+        .addChoice("Binance Smart Chain", "bsc")
     )
     .addStringOption((option) =>
       option
@@ -46,6 +46,7 @@ export const SendEther: ICommand = {
         const walletUtils = new etherUtils(w, network);
         const bal = await walletUtils.balance();
         const gas = await walletUtils.estimateGasPriceTransfer();
+        const networkObj = NetworkUtils.getNetwork(network)!
         console.log(gas);
         if (
           !utils
@@ -70,14 +71,14 @@ export const SendEther: ICommand = {
         }
         const row = new MessageActionRow().addComponents(
           new MessageButton()
-            .setURL(`${process.env[network]}/tx/${tx.hash}`)
+            .setURL(`${networkObj.explorer}/tx/${tx.hash}`)
             .setLabel("View transaction on explorer")
             .setStyle("LINK")
         );
 
         const embed = new MessageEmbed().setColor("GREEN").addFields({
           name: "Success",
-          value: `You sent ${amount}ETH (${network}) to ${to}`,
+          value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,
         });
         await interaction.editReply({
           embeds: [embed],

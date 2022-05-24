@@ -38,7 +38,7 @@ export default [
     network: "bsc",
     name: "Binance Smart Chain",
     chainId: 137,
-    currency: "MATIC",
+    currency: "BNB",
     rpc: [
       "https://rpc.ankr.com/bsc",
       "https://bsc-dataseed1.ninicoin.io/",
