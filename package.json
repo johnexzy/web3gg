@@ -4,8 +4,8 @@
   "description": "simple wallet integration for discord",
   "main": "./prod/index.js",
   "scripts": {
-    "build": "tsc && node -r dotenv/config ./prod/index.js",
-    "start": "./node_modules/nodemon/bin/nodemon.js -e ts  --exec \"npm run build\"",
+    "build": "tsc",
+    "start": "node -r dotenv/config ./prod/index.js",
     "cz": "cz"
   },
   "repository": {
