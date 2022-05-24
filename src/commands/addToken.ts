@@ -17,8 +17,8 @@ export const AddToken: ICommand = {
         .setName("network")
         .setDescription("Select Blockchain network")
         .setRequired(true)
-        .addChoice("Mainnet", "mainnet")
-        .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Ethereum", "mainnet")
+        .addChoice("Binance Smart Chain", "bsc")
     )
     .addStringOption((option) =>
       option
@@ -51,6 +51,7 @@ export const AddToken: ICommand = {
       const w = new WalletBuilder().importFromPrivateKey(w_user);
       const TokenUtils = new tokenUtils(w, network, contractAddress);
       const bytecode = await TokenUtils.getCode();
+      const networkObj = NetworkUtils.getNetwork(network)!;
       if (bytecode === "0x") {
         const err = new MessageEmbed()
           .setColor("DARK_RED")
@@ -100,7 +101,7 @@ export const AddToken: ICommand = {
         .addField("Total Supply", totalSupply.toString())
         .setFooter({
           text: `use ${inlineCode(
-            "/wallet " + network
+            "/wallet " + networkObj.name
           )} to view token balances`,
         });
 

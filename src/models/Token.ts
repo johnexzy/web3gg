@@ -51,7 +51,7 @@ export const tokenCreation = {
     allowNull: false,
   },
   decimals: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   network: {
@@ -59,7 +59,7 @@ export const tokenCreation = {
     allowNull: false,
   },
   chain_id: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   createdAt: DataTypes.DATE,

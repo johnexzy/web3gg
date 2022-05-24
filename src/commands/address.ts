@@ -25,7 +25,7 @@ export const Address: ICommand = {
         const embed = new MessageEmbed()
           .setTitle("Creating a Wallet")
           .addField(
-            "You can create a new wallet or Improve your wallet",
+            "You can create a new wallet or import your wallet",
             `${inlineCode("/create-wallet")}`
           );
         await interaction.editReply({ embeds: [embed] });

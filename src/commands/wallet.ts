@@ -18,8 +18,8 @@ export const Wallet: ICommand = {
         .setName("network")
         .setDescription("Select Blockchain network")
         .setRequired(true)
-        .addChoice("Mainnet", "mainnet")
-        .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Ethereum", "mainnet")
+        .addChoice("Binance Smart Chain", "bsc")
     ),
 
   async execute(interaction) {
@@ -44,18 +44,21 @@ export const Wallet: ICommand = {
       const w = new WalletBuilder().importFromPrivateKey(user_pkey);
       const walletUtils = new etherUtils(w, network);
       const bal = (await walletUtils.balance()).slice(0, 6);
-      const networkName = NetworkUtils.getNetwork(network)!;
+      const networkObj = NetworkUtils.getNetwork(network)!;
       const embed = new MessageEmbed()
-        .setTitle(`Wallet Balance for ${networkName.name}`)
+        .setTitle(`Wallet Balance for ${networkObj.name}`)
         .setColor("GREEN")
         .addFields(
           {
             name: "Balance",
-            value: `${account.toString()} You have ${bold(
-              bal
-            )}ETH (${network})`,
+            value: `${account.toString()} You have ${bold(bal)}${
+              networkObj.currency
+            } (${network})`,
           },
-          { name: "\u200b", value: bold("Token Balances") }
+          {
+            name: "\u200b",
+            value: bold(networkObj.name + " Token Balances"),
+          }
         );
       const tc = new TokenController();
       const tokens = await tc.getAllTokensByUserWithNetwork(
@@ -63,7 +66,10 @@ export const Wallet: ICommand = {
         network
       );
       if (tokens.length === 0) {
-        embed.addField('\u200b', `No Token Imported, use ${inlineCode('/import-token')} command`);
+        embed.addField(
+          "\u200b",
+          `No Token Imported, use ${inlineCode("/import-token")} command`
+        );
       }
       for (const t of tokens) {
         const tokenBalance = await new tokenUtils(

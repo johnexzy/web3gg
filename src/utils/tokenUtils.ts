@@ -8,7 +8,6 @@ export default class TokenUtils extends Provider {
   constructor(wallet: Wallet, network: string, contract_address: string) {
     super(network);
     this.wallet = wallet;
-    console.log(wallet.address);
     this.contractAddress = contract_address;
   }
   async initializeSinger(): Promise<Wallet> {
@@ -57,7 +56,6 @@ export default class TokenUtils extends Provider {
       utils.parseEther(amount.toString())
     );
     await tx.wait();
-    console.log(tx.hash);
     return tx;
   }
 }
