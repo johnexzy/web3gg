@@ -47,7 +47,6 @@ export const SendEther: ICommand = {
         const bal = await walletUtils.balance();
         const gas = await walletUtils.estimateGasPriceTransfer();
         const networkObj = NetworkUtils.getNetwork(network)!
-        console.log(gas);
         if (
           !utils
             .parseEther(bal)

@@ -18,7 +18,6 @@ export default class UserWallet {
    */
   async saveKeytoUser(user_id: Snowflake, pkey: string, address: string) {
     try {
-      console.log("Saving user ", user_id, address);
       await this.wallets.create({
         disc_id: user_id,
         pkey: CryptoJS.encode(pkey),

@@ -71,7 +71,6 @@ export const TipEther: ICommand = {
       const bal = await walletUtils.balance();
       const gas = await walletUtils.estimateGasPriceTransfer();
       const networkObj = NetworkUtils.getNetwork(network)!;
-      console.log(gas.toNumber());
       if (
         !utils.parseEther(bal).gt(utils.parseEther(amount.toString()).add(gas))
       ) {

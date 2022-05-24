@@ -26,7 +26,6 @@ export default class Cowry {
       utils.parseEther(amount.toString())
     );
     await tx.wait();
-    console.log(tx.hash);
     return tx;
   }
 }

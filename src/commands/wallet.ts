@@ -27,9 +27,7 @@ export const Wallet: ICommand = {
     try {
       const account = interaction.user;
       const network = interaction.options.getString("network", true);
-      console.log(network);
       const user_pkey = await user.fromIdGetKey(account.id);
-      console.log("key", user_pkey);
       if (!user_pkey) {
         // const string = quote()
         const embed = new MessageEmbed().setColor("RED").addFields({
@@ -81,13 +79,11 @@ export const Wallet: ICommand = {
         const div = 10 ** t.decimals;
         const tokenBalanceTonumber: number =
           parseInt(tokenBalance.toString()) / div;
-        console.log(tokenBalance.toString());
         embed.addField(
           bold(t.name),
           `${tokenBalanceTonumber} ${t.symbol}`,
           true
         );
-        console.log(t.name);
       }
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
