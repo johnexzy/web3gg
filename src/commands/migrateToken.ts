@@ -48,7 +48,7 @@ export const MigrateToken: ICommand = {
         const tx = await (new Cowry()).interact(wallet.address, amount.toString());
         const row = new MessageActionRow().addComponents(
           new MessageButton()
-            .setURL(`${process.env.rinkeby}/tx/${tx.hash}`)
+            .setURL(`https://rinkeby.etherscan.io/tx/${tx.hash}`)
             .setLabel("View transaction on etherscan")
             .setStyle("LINK")
         );
