@@ -114,6 +114,7 @@ export const TipEther: ICommand = {
         components: [row],
       });
     } catch (error) {
+      console.log(error)
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });
