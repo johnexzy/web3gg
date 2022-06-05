@@ -42,7 +42,7 @@ export const SendEther: ICommand = {
       const to = interaction.options.getString("to", true);
       const amount = interaction.options.getNumber("amount", true);
       if (user_pkey) {
-        const w = new WalletBuilder().importFromPhrase(user_pkey);
+        const w = new WalletBuilder().importFromPrivateKey(user_pkey);
         const walletUtils = new etherUtils(w, network);
         const bal = await walletUtils.balance();
         const gas = await walletUtils.estimateGasPriceTransfer();

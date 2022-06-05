@@ -63,8 +63,8 @@ export const TipEther: ICommand = {
         await interaction.editReply({ embeds: [embed] });
         return;
       }
-      const w_sender = new WalletBuilder().importFromPhrase(user_pkey);
-      const addr_recipient = new WalletBuilder().importFromPhrase(
+      const w_sender = new WalletBuilder().importFromPrivateKey(user_pkey);
+      const addr_recipient = new WalletBuilder().importFromPrivateKey(
         w_recipient_key
       ).address;
       const walletUtils = new etherUtils(w_sender, network);
