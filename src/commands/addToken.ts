@@ -19,6 +19,7 @@ export const AddToken: ICommand = {
         .setRequired(true)
         .addChoice("Ethereum", "mainnet")
         .addChoice("Binance Smart Chain", "bsc")
+        .addChoice("Polygon", "polygon")
     )
     .addStringOption((option) =>
       option
