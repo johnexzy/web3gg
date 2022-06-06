@@ -118,7 +118,8 @@ export default class Tokens {
         `${net.api}&apikey=${apiKey}&address=${wallet_addr}`
       );
       const tokenstnx: TokenTx = await tokensTnxResp.json();
-      if (tokenstnx.message !== "OK" && typeof tokenstnx.result !== "object") {
+      console.log(tokenstnx);
+      if (tokenstnx.status !== "1" || typeof tokenstnx.result !== "object") {
         return [];
       }
       const tokens =
