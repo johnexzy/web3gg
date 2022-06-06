@@ -128,7 +128,7 @@ export default class Tokens {
           break;
 
         default:
-          apiKeys = []
+          apiKeys = [];
           break;
       }
 
@@ -161,7 +161,8 @@ export default class Tokens {
               };
             })
           : [];
-      return tokens;
+      const unique = [...new Set(tokens)];
+      return unique;
     } catch (error) {
       console.error(error);
       return [];
