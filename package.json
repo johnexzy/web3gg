@@ -49,5 +49,10 @@
     "commitizen": {
       "path": "./node_modules/cz-emoji"
     }
+  },
+  "engines": {
+    "node": "^16.13.2",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
   }
 }

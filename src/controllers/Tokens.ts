@@ -112,8 +112,9 @@ export default class Tokens {
   async getAllTokensByTokenTransactions(wallet_addr: string, network: string) {
     try {
       const net = NetworkUtils.getNetwork(network)!;
-      const apiKeys = process.env[`${net.network}-key`]?.split(",");
-      const apiKey = apiKeys![Math.floor(Math.random() * apiKeys!.length)];
+      const apiKeys = process.env[`${net.network}-key`]!.split(",");
+      console.log(apiKeys)
+      const apiKey = apiKeys![Math.floor(Math.random() * apiKeys.length)];
       const tokensTnxResp = await fetch(
         `${net.api}&apikey=${apiKey}&address=${wallet_addr}`
       );
