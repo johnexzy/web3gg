@@ -85,7 +85,12 @@ export const Wallet: ICommand = {
     //         },
     //     }
     // );
+      const tokenContract: string[] = []
       for (const t of allTokens) {
+        if (tokenContract.includes(t.contract_address)) {
+          continue
+        }
+        tokenContract.push(t.contract_address)
         const tokenBalance = await new tokenUtils(
           w, // wallet
           network, //network
