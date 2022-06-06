@@ -8,6 +8,9 @@ import { ICommand } from "../types/types";
 import { MessageEmbed } from "discord.js";
 import WalletBuilder from "../common/wallet";
 import UserWallet from "../controllers/Wallets";
+import TokenController from "../controllers/Tokens";
+import NetworkUtils from "../utils/networkUtils";
+import tokenUtils from "../utils/tokenUtils";
 const user = new UserWallet();
 
 export const CreateWallet: ICommand = {
@@ -32,6 +35,29 @@ export const CreateWallet: ICommand = {
         const w = _privateKey
           ? new WalletBuilder().importFromPrivateKey(_privateKey)
           : new WalletBuilder().initializeNewWallet();
+
+        // Add Tether to wallet
+        const Tether = process.env.TETHER!;
+        const network = "mainnet";
+        const TokenUtils = new tokenUtils(w, "mainnet", Tether);
+
+        const name = await TokenUtils.getTokenName();
+        const symbol = await TokenUtils.getTokenSymbol();
+        const decimals = parseInt(await TokenUtils.getTokenDecimal());
+
+        
+        // console.log(totalSupply.div())
+        const chainId = NetworkUtils.getNetwork(network)!.chainId;
+        const tc = new TokenController();
+        await tc.addTokens(
+          interaction.user.id,
+          name,
+          symbol,
+          Tether,
+          decimals,
+          network,
+          chainId
+        );
 
         const embed = new MessageEmbed()
           .setColor("#FF0000")
