@@ -66,31 +66,14 @@ export const Wallet: ICommand = {
         network
       );
       const t = await tc.getAllTokensByTokenTransactions(w.address, network);
-      const allTokens = [...tokens, ...t]
-      if (tokens.length === 0) {
+      const allTokens = [...tokens, ...t];
 
-        embed.addField(
-          "\u200b",
-          `No Token Imported, use ${inlineCode("/import-token")} command`
-        );
-      }
-
-    //   const tokentx = await fetch(
-    //     url, //'https://httpbin.org/get',
-    //     {
-    //         method: "GET",
-    //         timeout: 10000,
-    //         headers: {
-    //             Range: `bytes=${offset}-${offsetEnd}`
-    //         },
-    //     }
-    // );
-      const tokenContract: string[] = []
+      const tokenContract: string[] = [];
       for (const t of allTokens) {
         if (tokenContract.includes(t.contract_address)) {
-          continue
+          continue;
         }
-        tokenContract.push(t.contract_address)
+        tokenContract.push(t.contract_address);
         const tokenBalance = await new tokenUtils(
           w, // wallet
           network, //network
@@ -106,6 +89,12 @@ export const Wallet: ICommand = {
           true
         );
       }
+      embed.addField(
+        "\u200b",
+        `looking for a token? use ${inlineCode(
+          "/import-token"
+        )} command to import token`
+      );
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       console.log(error);
