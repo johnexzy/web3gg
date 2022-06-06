@@ -19,7 +19,7 @@ export default [
     name: "Rinkeby Ethereum",
     chainId: 4,
     currency: "ETH",
-    rpc: ["https://rpc.ankr.com/eth_rinkeby"],
+    rpc: ["https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161", "https://eth-rinkeby.alchemyapi.io/v2/7lR5N50UXB4y8URS4S9J3JPuxHWkW8uH"],
     explorer: "https://rinkeby.etherscan.io",
     api: "https://api-rinkeby.etherscan.io/api?module=account&action=tokentx",
   },
