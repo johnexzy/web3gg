@@ -20,6 +20,8 @@ export const Wallet: ICommand = {
         .setRequired(true)
         .addChoice("Ethereum", "mainnet")
         .addChoice("Binance Smart Chain", "bsc")
+        .addChoice("Polygon", "polygon")
+        .addChoice("Rinkeby", "rinkeby")
     ),
 
   async execute(interaction) {
@@ -63,13 +65,27 @@ export const Wallet: ICommand = {
         interaction.user.id,
         network
       );
+      const t = await tc.getAllTokensByTokenTransactions(w.address, network);
+      const allTokens = [...tokens, ...t]
       if (tokens.length === 0) {
+
         embed.addField(
           "\u200b",
           `No Token Imported, use ${inlineCode("/import-token")} command`
         );
       }
-      for (const t of tokens) {
+
+    //   const tokentx = await fetch(
+    //     url, //'https://httpbin.org/get',
+    //     {
+    //         method: "GET",
+    //         timeout: 10000,
+    //         headers: {
+    //             Range: `bytes=${offset}-${offsetEnd}`
+    //         },
+    //     }
+    // );
+      for (const t of allTokens) {
         const tokenBalance = await new tokenUtils(
           w, // wallet
           network, //network

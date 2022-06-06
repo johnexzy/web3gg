@@ -1,6 +1,9 @@
 import { Snowflake } from "discord.js";
 import sequelize from "../core/sequelize";
 import { TokenModel } from "../models/Token";
+import fetch from "node-fetch"
+import NetworkUtils from "../utils/networkUtils"
+import { TokenTx } from "../types/types"
 // const wallet_model = require('../models/wallets')
 export default class Tokens {
   tokens
@@ -100,6 +103,39 @@ export default class Tokens {
     }
   }
 
+  /**
+   * Get all token by Transactoins and network
+   * @param {string} address -user address
+   * @param 
+   * @returns {Array} Tokens
+   */
+   async getAllTokensByTokenTransactions(wallet_addr: string, network: string) {
+    try {
+      const net = NetworkUtils.getNetwork(network)!;
+      const apiKeys = process.env[`${net.network}-key`]?.split(',')
+      const apiKey = apiKeys![Math.floor(Math.random() * apiKeys!.length)];
+      const tokensTnxResp = await fetch(`${net.api}&apikey=${apiKey}&address=${wallet_addr}`)
+      const tokenstnx : TokenTx = await tokensTnxResp.json();
+      if(tokenstnx.message !== "OK" && typeof tokenstnx.result !== 'object'){
+        return [];
+      }
+      const tokens = (typeof(tokenstnx.result) === 'object' && tokenstnx.result.length) ? tokenstnx.result.map(t=> {
+        const {tokenName, tokenSymbol, tokenDecimal, contractAddress} = t
+        return ({
+          name: tokenName,
+          symbol: tokenSymbol,
+          decimals: tokenDecimal,
+          contract_address: contractAddress,
+          network: net.network,
+          chain_id: net.chainId
+        })
+      }) : []
+      return tokens;
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  }
   /**
    * Get Key from User DIscord ID
    * @param {string} user_id user discord id
