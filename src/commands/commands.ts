@@ -23,7 +23,7 @@ export const Commands: ICommand = {
           ...CommandList.map((command, i) => ({
             name: i + 1 + ").\t " + command.data.description,
             value:
-              " \u200b \u200b " +
+              " \u200b \u200b \t " +
               inlineCode(`/${command.data.name}`) +
               "\n\n\n\n",
           }))
