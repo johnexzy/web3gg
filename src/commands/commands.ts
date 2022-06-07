@@ -21,13 +21,15 @@ export const Commands: ICommand = {
 
         .addFields(
           ...CommandList.map((command, i) => ({
-            name: i + 1 + ").\t "+"\t\t " +
-            inlineCode(`/${command.data.name}`) +
-            "\n\n\n\n" + command.data.description,
-            value:
-              "\t\t " +
+            name:
+              i +
+              1 +
+              "). " +
+              "\t " +
               inlineCode(`/${command.data.name}`) +
-              "\n\n\n\n",
+              "\n\t" +
+              command.data.description,
+            value: "\u200b",
           }))
         );
       await interaction.reply({ embeds: [embed] });
