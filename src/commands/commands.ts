@@ -22,13 +22,14 @@ export const Commands: ICommand = {
         .addFields(
           ...CommandList.map((command, i) => ({
             name:
+              "\n\n" +
               i +
               1 +
               ")." +
               "\t" +
               inlineCode(`/${command.data.name}`) +
               "\n\t",
-            value: "  "+command.data.description,
+            value: "  " + command.data.description,
           }))
         );
       await interaction.reply({ embeds: [embed] });
