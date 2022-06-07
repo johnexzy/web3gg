@@ -12,13 +12,13 @@ export const Commands: ICommand = {
     try {
       const embed = new MessageEmbed()
         .setTitle("Available commands")
-        .setDescription("All registered slash commands")
+        .setDescription("All registered slash commands\n")
         .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
         
         .addFields(
           ...CommandList.map((command) => ({
-            name: inlineCode(`/${command.data.name}`),
-            value: command.data.description,
+            name: command.data.description,
+            value: inlineCode(`/${command.data.name}`)+"\n\n",
           }))
         );
       await interaction.reply({ embeds: [embed] });
