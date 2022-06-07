@@ -12,7 +12,7 @@ const user_wallet = new UserWallet();
 export const SendEther: ICommand = {
   data: new SlashCommandBuilder()
     .setName("send")
-    .setDescription("Send Ether to Address")
+    .setDescription("Send ETH, BNB or MATIC to Address")
     .addStringOption((option) =>
       option
         .setName("network")

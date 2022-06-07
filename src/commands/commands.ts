@@ -6,13 +6,13 @@ import { CommandList } from "./_CommandList";
 export const Commands: ICommand = {
   data: new SlashCommandBuilder()
     .setName("commands")
-    .setDescription("All slash commands and info"),
+    .setDescription("Display all commands"),
 
   async execute(interaction) {
     try {
       const embed = new MessageEmbed()
-        .setTitle("Available commands")
-        .setDescription("All registered slash commands\n")
+        .setTitle("Web3Bot")
+        .setDescription("All registered slash commands\n\n")
         .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
         
         .addFields(

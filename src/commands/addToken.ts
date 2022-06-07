@@ -11,7 +11,7 @@ const user_wallet = new UserWallet();
 export const AddToken: ICommand = {
   data: new SlashCommandBuilder()
     .setName("import-token")
-    .setDescription("Import ERC-20 Tokens")
+    .setDescription("Import ERC-20 Tokens with contract address")
     .addStringOption((option) =>
       option
         .setName("network")

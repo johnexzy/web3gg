@@ -12,7 +12,7 @@ const user = new UserWallet();
 export const Wallet: ICommand = {
   data: new SlashCommandBuilder()
     .setName("wallet")
-    .setDescription("Replies with wallet balance")
+    .setDescription("Get wallet balance")
     .addStringOption((option) =>
       option
         .setName("network")
