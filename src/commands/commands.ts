@@ -21,7 +21,9 @@ export const Commands: ICommand = {
 
         .addFields(
           ...CommandList.map((command, i) => ({
-            name: i + 1 + ").\t " + command.data.description,
+            name: i + 1 + ").\t "+"\t\t " +
+            inlineCode(`/${command.data.name}`) +
+            "\n\n\n\n" + command.data.description,
             value:
               "\t\t " +
               inlineCode(`/${command.data.name}`) +
