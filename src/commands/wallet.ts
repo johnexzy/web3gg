@@ -52,8 +52,8 @@ export const Wallet: ICommand = {
         .addFields(
           {
             name: "Balance",
-            value: `${account.toString()} You have ${bold(bal)}${
-              networkObj.currency
+            value: `${account.toString()} \n \u200b You have ${bold(bal)} ${
+              bold(networkObj.currency)
             } (${network})`,
           },
           {
