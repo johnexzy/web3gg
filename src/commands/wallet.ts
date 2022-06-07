@@ -48,6 +48,7 @@ export const Wallet: ICommand = {
       const embed = new MessageEmbed()
         .setTitle(`Wallet Balance for ${networkObj.name}`)
         .setColor("GREEN")
+        .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
         .addFields(
           {
             name: "Balance",

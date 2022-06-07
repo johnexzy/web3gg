@@ -100,6 +100,11 @@ export const TipEther: ICommand = {
       );
 
       const embed = new MessageEmbed()
+        .setAuthor({
+          name: "web3bot",
+          iconURL: "https://i.imgur.com/jP0MDWk.png",
+          url: "https://web3bot.gg",
+        })
         .setColor("GREEN")
         .addFields({
           name: "Success🎉🎉",
@@ -109,13 +114,14 @@ export const TipEther: ICommand = {
         })
         .setFooter({
           text: `use ${inlineCode("/wallet " + network)} to view balance`,
-        }).setURL(networkObj.explorer+'/tx/'+tx.hash);
+        })
+        .setURL(networkObj.explorer + "/tx/" + tx.hash);
       await interaction.editReply({
         embeds: [embed],
         components: [row],
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });

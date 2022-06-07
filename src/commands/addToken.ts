@@ -100,6 +100,7 @@ export const AddToken: ICommand = {
         .addField("Symbol", symbol, true)
         .addField("Network", network)
         .addField("Total Supply", totalSupply.toString())
+        .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
         .setFooter({
           text: `use ${inlineCode(
             "/wallet " + networkObj.name

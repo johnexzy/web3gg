@@ -2,7 +2,7 @@ import { SlashCommandBuilder, inlineCode, bold } from "@discordjs/builders";
 import { ICommand } from "../types/types";
 import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
 import WalletBuilder from "../common/wallet";
-import {utils} from "ethers"
+import { utils } from "ethers";
 import TokenController from "../controllers/Tokens";
 import NetworkUtils from "../utils/networkUtils";
 import etherUtils from "../utils/etherUtils";
@@ -47,7 +47,7 @@ export const SendEther: ICommand = {
         const walletUtils = new etherUtils(w, network);
         const bal = await walletUtils.balance();
         const gas = await walletUtils.estimateGasPriceTransfer();
-        const networkObj = NetworkUtils.getNetwork(network)!
+        const networkObj = NetworkUtils.getNetwork(network)!;
         if (
           !utils
             .parseEther(bal)
@@ -76,13 +76,20 @@ export const SendEther: ICommand = {
             .setStyle("LINK")
         );
 
-        const embed = new MessageEmbed().setColor("GREEN").addFields({
-          name: "Success",
-          value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,
-        });
+        const embed = new MessageEmbed()
+          .setColor("GREEN")
+          .setAuthor({
+            name: "web3bot",
+            iconURL: "https://i.imgur.com/jP0MDWk.png",
+            url: "https://web3bot.gg",
+          })
+          .addFields({
+            name: "Success",
+            value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,
+          });
         await interaction.editReply({
           embeds: [embed],
-          components: [row]
+          components: [row],
         });
       } else {
         // const string = quote()
@@ -95,9 +102,9 @@ export const SendEther: ICommand = {
         await interaction.editReply({ embeds: [embed] });
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       await interaction.editReply({
-        content: "There was an error while executing this command!"
+        content: "There was an error while executing this command!",
       });
     }
   },

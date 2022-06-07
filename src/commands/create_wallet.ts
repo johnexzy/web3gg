@@ -62,6 +62,7 @@ export const CreateWallet: ICommand = {
         const embed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle(`Wallet Created Successfully`)
+          .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
           .addFields(
             { name: "Private Key:", value: `${spoiler(w.privateKey)}` },
             { name: "Wallet Address", value: `${w.address}` }
