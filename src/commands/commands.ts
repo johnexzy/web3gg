@@ -14,6 +14,7 @@ export const Commands: ICommand = {
         .setTitle("Available commands")
         .setDescription("All registered slash commands")
         .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
+        
         .addFields(
           ...CommandList.map((command) => ({
             name: inlineCode(`/${command.data.name}`),

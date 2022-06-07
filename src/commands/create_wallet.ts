@@ -62,6 +62,7 @@ export const CreateWallet: ICommand = {
         const embed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle(`Wallet Created Successfully`)
+          .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
           .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
           .addFields(
             { name: "Private Key:", value: `${spoiler(w.privateKey)}` },

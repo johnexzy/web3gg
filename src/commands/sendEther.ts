@@ -83,6 +83,7 @@ export const SendEther: ICommand = {
             iconURL: "https://i.imgur.com/jP0MDWk.png",
             url: "https://web3bot.gg",
           })
+          .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
           .addFields({
             name: "Success",
             value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,

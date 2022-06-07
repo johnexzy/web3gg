@@ -106,6 +106,7 @@ export const TipEther: ICommand = {
           url: "https://web3bot.gg",
         })
         .setColor("GREEN")
+        .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
