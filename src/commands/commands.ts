@@ -18,7 +18,7 @@ export const Commands: ICommand = {
         .addFields(
           ...CommandList.map((command) => ({
             name: command.data.description,
-            value: inlineCode(`/${command.data.name}`)+"\n\n",
+            value: "\u200b \u200b"+inlineCode(`/${command.data.name}`)+"\n\n\n\n",
           }))
         );
       await interaction.reply({ embeds: [embed] });
