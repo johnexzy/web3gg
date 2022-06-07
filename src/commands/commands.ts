@@ -24,12 +24,11 @@ export const Commands: ICommand = {
             name:
               i +
               1 +
-              "). " +
-              "\t " +
+              ")." +
+              "\t" +
               inlineCode(`/${command.data.name}`) +
-              "\n\t" +
-              command.data.description,
-            value: "\u200b",
+              "\n\t",
+            value: "  "+command.data.description,
           }))
         );
       await interaction.reply({ embeds: [embed] });
