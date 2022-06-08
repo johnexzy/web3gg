@@ -87,7 +87,7 @@ export const SendEther: ICommand = {
           .addFields({
             name: "Success",
             value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,
-          });
+          }).setFooter({text: "Powered by Afro Apes"});
         await interaction.editReply({
           embeds: [embed],
           components: [row],
@@ -99,7 +99,7 @@ export const SendEther: ICommand = {
           value: `use ${inlineCode(
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
-        });
+        }).setFooter({text: "Powered by Afro Apes"});
         await interaction.editReply({ embeds: [embed] });
       }
     } catch (error) {

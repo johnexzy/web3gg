@@ -6,7 +6,7 @@ import { CommandList } from "./_CommandList";
 export const Commands: ICommand = {
   data: new SlashCommandBuilder()
     .setName("commands")
-    .setDescription("Display all commands"),
+    .setDescription("Displays all Web3Bot commands"),
 
   async execute(interaction) {
     try {

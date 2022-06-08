@@ -62,12 +62,13 @@ export const CreateWallet: ICommand = {
         const embed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle(`Wallet Created Successfully`)
+          .setDescription(`Never disclose this key. Anyone with your private keys can steal any assets held in your account. (${inlineCode('only can see this')})`)
           .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
           .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
           .addFields(
             { name: "Private Key:", value: `${spoiler(w.privateKey)}` },
             { name: "Wallet Address", value: `${w.address}` }
-          );
+          ).setFooter({text: "Powered by Afro Apes"});
 
         await user.saveKeytoUser(interaction.user.id, w.privateKey, w.address);
         await interaction.editReply({ embeds: [embed] });

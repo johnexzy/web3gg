@@ -106,16 +106,21 @@ export const TipEther: ICommand = {
           url: "https://web3bot.gg",
         })
         .setColor("GREEN")
-        .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
+        .setThumbnail(
+          interaction.user.avatarURL({ dynamic: true }) ||
+            interaction.user.defaultAvatarURL
+        )
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
             amount.toString()
           )}${bold(networkObj.currency)} (${network}) to ${to}`,
         })
-        .setFooter({
-          text: `use ${inlineCode("/wallet " + network)} to view balance`,
-        })
+        .addField(
+          `\u200b`,
+          `use ${inlineCode("/wallet " + network)} to view balance`
+        )
+        .setFooter({ text: "Powered by Afro Apes" })
         .setURL(networkObj.explorer + "/tx/" + tx.hash);
       await interaction.editReply({
         embeds: [embed],

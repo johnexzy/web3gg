@@ -58,7 +58,7 @@ export const MigrateToken: ICommand = {
           .setTitle(`☑️Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}`)
           .setDescription(
             `10% of ${amount / 0.9} was deducted as a migration fee`
-          );
+          ).setFooter({text: "Powered by Afro Apes"});
         // await wait(4000);
         await interaction.editReply({
           embeds: [embed],

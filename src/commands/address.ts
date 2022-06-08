@@ -22,12 +22,12 @@ export const Address: ICommand = {
       const user = interaction.options.getUser("user") || interaction.user;
       const wallet_address = await user_wallet.fromIdGetAddress(user.id);
       if (!wallet_address) {
-        const embed = new MessageEmbed()
-          .setTitle("Creating a Wallet")
-          .addField(
-            "You can create a new wallet or import your wallet",
-            `${inlineCode("/create-wallet")}`
-          );
+        const embed = new MessageEmbed().setColor("RED").addFields({
+          name: "No wallet initialized",
+          value: `use ${inlineCode(
+            "/create-wallet"
+          )} to create a new wallet or import existing wallet`,
+        }).setFooter({text: "Powered by Afro Apes"});
         await interaction.editReply({ embeds: [embed] });
         return;
       }
