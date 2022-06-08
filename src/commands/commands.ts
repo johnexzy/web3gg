@@ -13,6 +13,7 @@ export const Commands: ICommand = {
       const embed = new MessageEmbed()
         .setTitle("Web3Bot")
         .setDescription("All registered slash commands\n\n")
+        .setFooter({text: "Powered by Afro Apes"})
         .setAuthor({
           name: "web3bot",
           iconURL: "https://i.imgur.com/jP0MDWk.png",
