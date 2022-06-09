@@ -45,7 +45,6 @@ export const CreateWallet: ICommand = {
         const symbol = await TokenUtils.getTokenSymbol();
         const decimals = parseInt(await TokenUtils.getTokenDecimal());
 
-        
         // console.log(totalSupply.div())
         const chainId = NetworkUtils.getNetwork(network)!.chainId;
         const tc = new TokenController();
@@ -62,12 +61,25 @@ export const CreateWallet: ICommand = {
         const embed = new MessageEmbed()
           .setColor("#FF0000")
           .setTitle(`Wallet Created Successfully`)
-          .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
-          .setAuthor({ name: 'web3bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
+          .setDescription(
+            `Never disclose this key. Anyone with your private keys can steal any assets held in your account. (${inlineCode(
+              "only you can see this"
+            )})`
+          )
+          .setThumbnail(
+            interaction.user.avatarURL({ dynamic: true }) ||
+              interaction.user.defaultAvatarURL
+          )
+          .setAuthor({
+            name: "web3bot",
+            iconURL: "https://i.imgur.com/jP0MDWk.png",
+            url: "https://web3bot.gg",
+          })
           .addFields(
             { name: "Private Key:", value: `${spoiler(w.privateKey)}` },
             { name: "Wallet Address", value: `${w.address}` }
-          );
+          )
+          .setFooter({ text: "Powered by Afro Apes" });
 
         await user.saveKeytoUser(interaction.user.id, w.privateKey, w.address);
         await interaction.editReply({ embeds: [embed] });
@@ -83,6 +95,7 @@ export const CreateWallet: ICommand = {
         await interaction.editReply({ embeds: [embed] });
       }
     } catch (error) {
+      console.log(error);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });
