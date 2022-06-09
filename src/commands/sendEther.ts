@@ -87,7 +87,7 @@ export const SendEther: ICommand = {
           .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
           .addFields({
             name: "Success",
-            value: `You sent ${amount}${networkObj.currency} (${network}) to ${to}`,
+            value: `You sent ${bold(amount.toString()+networkObj.currency)} (${network}) to ${to}`,
           }).setFooter({text: "Powered by Afro Apes"});
         await interaction.editReply({
           embeds: [embed],

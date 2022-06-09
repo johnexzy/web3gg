@@ -114,8 +114,8 @@ export const TipEther: ICommand = {
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
-            amount.toString()
-          )}${bold(networkObj.currency)} (${network}) to ${to}`,
+            amount.toString()+networkObj.currency
+          )} (${network}) to ${to}`,
         })
         .addField(
           `\u200b`,
