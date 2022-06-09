@@ -33,7 +33,8 @@ export const TipEther: ICommand = {
         .setRequired(false)
         .addChoice("Ethereum", "mainnet")
         .addChoice("Binance Smart Chain", "bsc")
-        .addChoice("Polygin", "polygon")
+        .addChoice("Polygon", "polygon")
+        .addChoice("Rinkeby Testnet", "rinkeby")
     ),
 
   async execute(interaction) {
