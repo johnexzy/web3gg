@@ -12,7 +12,7 @@ const user_wallet = new UserWallet();
 export const TipEther: ICommand = {
   data: new SlashCommandBuilder()
     .setName("tip")
-    .setDescription("Tip ETH, BNB or MATIC to a discord user")
+    .setDescription("Tip ETH, BNB or MATIC to server members")
     .addStringOption((option) =>
       option
         .setName("network")
