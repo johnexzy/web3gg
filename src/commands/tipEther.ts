@@ -13,7 +13,16 @@ export const TipEther: ICommand = {
   data: new SlashCommandBuilder()
     .setName("tip")
     .setDescription("Tip ETH, BNB or MATIC to a discord user")
-
+    .addStringOption((option) =>
+      option
+        .setName("network")
+        .setDescription("Select Blockchain network")
+        .setRequired(true)
+        .addChoice("Ethereum", "mainnet")
+        .addChoice("Binance Smart Chain", "bsc")
+        .addChoice("Polygon", "polygon")
+        .addChoice("Rinkeby Testnet", "rinkeby")
+    )
     .addUserOption((option) =>
       option
         .setName("to")
@@ -25,16 +34,6 @@ export const TipEther: ICommand = {
         .setName("amount")
         .setDescription("Amount to send")
         .setRequired(true)
-    )
-    .addStringOption((option) =>
-      option
-        .setName("network")
-        .setDescription("Select Blockchain network")
-        .setRequired(false)
-        .addChoice("Ethereum", "mainnet")
-        .addChoice("Binance Smart Chain", "bsc")
-        .addChoice("Polygon", "polygon")
-        .addChoice("Rinkeby Testnet", "rinkeby")
     ),
 
   async execute(interaction) {
@@ -114,7 +113,7 @@ export const TipEther: ICommand = {
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
-            amount.toString()+networkObj.currency
+            amount.toString() + networkObj.currency
           )} (${network}) to ${to}`,
         })
         .addField(
