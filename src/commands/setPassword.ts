@@ -41,6 +41,14 @@ export const SetPassword: ICommand = {
         await interaction.editReply({ embeds: [embed] });
         return;
       }
+      if (new_password.length < 5) {
+        const err_passwords = new MessageEmbed().setColor("RED").addFields({
+          name: "❌ Passwords should be at least 6 characters length",
+          value: `\u200b`,
+        }).setFooter({text: "Powered by Afro Apes"});
+        await interaction.editReply({ embeds: [err_passwords] });
+        return;
+      }
       const updatePass = await user_wallet.changePassword(
         interaction.user.id,
         current_password,
@@ -60,7 +68,7 @@ export const SetPassword: ICommand = {
         return;
       }
       const embed = new MessageEmbed()
-        .setColor("#FF0000")
+        .setColor("BLUE")
         .setTitle(`Password changed successfully`)
         .setThumbnail(
           interaction.user.avatarURL({ dynamic: true }) ||

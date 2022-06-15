@@ -54,7 +54,7 @@ export const ForgotPassword: ICommand = {
       );
       if (result) {
         const embed = new MessageEmbed()
-          .setColor("#FF0000")
+          .setColor("BLUE")
           .setTitle(`☑️ Password reset was successful`)
           .setThumbnail(
             interaction.user.avatarURL({ dynamic: true }) ||
