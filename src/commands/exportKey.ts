@@ -11,7 +11,7 @@ export const ExportKey: ICommand = {
     .setDescription("recover private key")
     .addStringOption((options) =>
       options
-        .setName("passowrd")
+        .setName("password")
         .setDescription("wallet's password")
         .setRequired(true)
     ),
