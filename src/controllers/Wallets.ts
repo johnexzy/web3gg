@@ -142,15 +142,21 @@ export default class UserWallet {
     }
   }
 
- async updatePass (disc_id:Snowflake, password: string): Promise<boolean> {
-  const res = await this.wallets.update(
-    {
-      password: bycrypt.hashSync(password, bycrypt.genSaltSync()),
-    },
-    {
-      where: { disc_id },
-    }
-  );
-  return res.length > 0
- }
+  /**
+   * Update Passowrd
+   * @param {string} disc_id user discord id
+   * @param {string} password user password
+   * @returns {Boolean} 
+   */
+  async updatePass(disc_id: Snowflake, password: string): Promise<boolean> {
+    const res = await this.wallets.update(
+      {
+        password: bycrypt.hashSync(password, bycrypt.genSaltSync()),
+      },
+      {
+        where: { disc_id },
+      }
+    );
+    return res.length > 0;
+  }
 }
