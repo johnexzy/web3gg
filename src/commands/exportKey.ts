@@ -60,6 +60,7 @@ export const ExportKey: ICommand = {
       // const embed = new MessageEmbed().addField('wallet', )
       // await wait(4000);
     } catch (error) {
+      console.log(error);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });

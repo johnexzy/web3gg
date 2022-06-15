@@ -75,6 +75,7 @@ export const SetPassword: ICommand = {
       await interaction.editReply({ embeds: [embed] });
       return;
     } catch (error) {
+      console.log(error);
       await interaction.editReply({
         content: "There was an error while executing this command!",
       });
