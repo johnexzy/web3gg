@@ -95,7 +95,7 @@ export const TipEther: ICommand = {
       }
       const row = new MessageActionRow().addComponents(
         new MessageButton()
-          .setURL(`${process.env[network]}/tx/${tx.hash}`)
+          .setURL(`${networkObj.explorer}/tx/${tx.hash}`)
           .setLabel("View transaction on explorer")
           .setStyle("LINK")
       );
@@ -114,8 +114,8 @@ export const TipEther: ICommand = {
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
-            amount.toString()
-          )}${bold(networkObj.currency)} (${network}) to ${to}`,
+            amount.toString()+networkObj.currency
+          )} (${network}) to ${to}`,
         })
         .addField(
           `\u200b`,
