@@ -96,7 +96,7 @@ export default class UserWallet {
       const User: WalletModel | null = await this.wallets.findOne({
         where: { disc_id },
       });
-      if (!User?.password || User?.password === null) {
+      if (User?.password === null || User?.password === '') {
         return -1;
       }
       return bycrypt.compareSync(password, User?.password!) ? 1 : 0;
@@ -107,7 +107,7 @@ export default class UserWallet {
   }
 
   /**
-   * Verify Passowrd
+   * change Passowrd
    * @param {string} disc_id user discord id
    * @param {string} password user password
    * @returns {Number} -1, 1 or 0
@@ -126,7 +126,7 @@ export default class UserWallet {
         return isVerified;
       }
       if (isVerified === -1) {
-        if (current_password !== process.env.DEFAULT_PASSWORD) {
+        if (current_password !== process.env.PASSWORD_DEFAULT) {
           return isVerified;
         }
       }
