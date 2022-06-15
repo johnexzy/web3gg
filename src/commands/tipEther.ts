@@ -12,8 +12,17 @@ const user_wallet = new UserWallet();
 export const TipEther: ICommand = {
   data: new SlashCommandBuilder()
     .setName("tip")
-    .setDescription("Tip ETH, BNB or MATIC to a discord user")
-
+    .setDescription("Tip ETH, BNB or MATIC to server members")
+    .addStringOption((option) =>
+      option
+        .setName("network")
+        .setDescription("Select Blockchain network")
+        .setRequired(true)
+        .addChoice("Ethereum", "mainnet")
+        .addChoice("Binance Smart Chain", "bsc")
+        .addChoice("Polygon", "polygon")
+        .addChoice("Rinkeby Testnet", "rinkeby")
+    )
     .addUserOption((option) =>
       option
         .setName("to")
@@ -28,13 +37,9 @@ export const TipEther: ICommand = {
     )
     .addStringOption((option) =>
       option
-        .setName("network")
-        .setDescription("Select Blockchain network")
-        .setRequired(false)
-        .addChoice("Ethereum", "mainnet")
-        .addChoice("Binance Smart Chain", "bsc")
-        .addChoice("Polygon", "polygon")
-        .addChoice("Rinkeby Testnet", "rinkeby")
+        .setName("password")
+        .setDescription("input your password to proceed")
+        .setRequired(true)
     ),
 
   async execute(interaction) {
@@ -45,6 +50,7 @@ export const TipEther: ICommand = {
       const to = interaction.options.getUser("to", true);
       const w_recipient_key = await user_wallet.fromIdGetKey(to.id);
       const amount = interaction.options.getNumber("amount", true);
+      const password = interaction.options.getString("password", true);
       if (!user_pkey) {
         const embed = new MessageEmbed().setColor("RED").addFields({
           name: "No wallet initialized",
@@ -83,7 +89,28 @@ export const TipEther: ICommand = {
         await interaction.editReply({ embeds: [embed] });
         return;
       }
-
+      const verifyPassword = await user_wallet.passwordVerify(
+        interaction.user.id,
+        password
+      );
+      if (verifyPassword === -1) {
+        let embedResponse = new MessageEmbed().setColor("RED").addFields({
+          name: "no password set for this wallet, please set a password",
+          value: `use ${inlineCode("/change-password")}`,
+        });
+        await interaction.editReply({ embeds: [embedResponse] });
+        return;
+      }
+      if (verifyPassword === 0) {
+        let embedResponse = new MessageEmbed().setColor("RED").addFields({
+          name: "incorrect password",
+          value: `use ${inlineCode(
+            "/reset-password"
+          )} to recover your password with private key `,
+        });
+        await interaction.editReply({ embeds: [embedResponse] });
+        return;
+      }
       const tx = await walletUtils.send(addr_recipient, amount.toString());
       if (!tx) {
         const embed = new MessageEmbed().setColor("RED").addFields({
@@ -114,7 +141,7 @@ export const TipEther: ICommand = {
         .addFields({
           name: "Success🎉🎉",
           value: `${interaction.user.toString()} tipped ${bold(
-            amount.toString()+networkObj.currency
+            amount.toString() + networkObj.currency
           )} (${network}) to ${to}`,
         })
         .addField(

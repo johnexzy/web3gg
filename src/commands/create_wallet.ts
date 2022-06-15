@@ -19,6 +19,18 @@ export const CreateWallet: ICommand = {
     .setDescription("Create or import a Wallet")
     .addStringOption((option) =>
       option
+        .setName("set-password")
+        .setDescription("set password for the wallet")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("confirm-password")
+        .setDescription("confirm password")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
         .setName("private-key")
         .setDescription("private for the wallet")
         .setRequired(false)
@@ -28,7 +40,25 @@ export const CreateWallet: ICommand = {
     await interaction.deferReply({ ephemeral: true });
     try {
       const user_pkey = await user.fromIdGetKey(interaction.user.id);
-
+      const password = interaction.options.getString("set-password", true);
+      const confirm_password = interaction.options.getString("confirm-password", true);
+      console.log(password, confirm_password)
+      if (password !== confirm_password) {
+        const err_passwords = new MessageEmbed().setColor("RED").addFields({
+          name: "❌ Passwords don't match",
+          value: `\u200b`,
+        }).setFooter({text: "Powered by Afro Apes"});
+        await interaction.editReply({ embeds: [err_passwords] });
+        return;
+      }
+      if (password.length < 5) {
+        const err_passwords = new MessageEmbed().setColor("RED").addFields({
+          name: "❌ Passwords should be at least 6 characters length",
+          value: `\u200b`,
+        }).setFooter({text: "Powered by Afro Apes"});
+        await interaction.editReply({ embeds: [err_passwords] });
+        return;
+      }
       if (!user_pkey) {
         const _privateKey = interaction.options.getString("private-key");
 
@@ -36,14 +66,17 @@ export const CreateWallet: ICommand = {
           ? new WalletBuilder().importFromPrivateKey(_privateKey)
           : new WalletBuilder().initializeNewWallet();
 
+
         // Add Tether to wallet
         const Tether = process.env.TETHER!;
         const network = "mainnet";
         const TokenUtils = new tokenUtils(w, "mainnet", Tether);
 
+
         const name = await TokenUtils.getTokenName();
         const symbol = await TokenUtils.getTokenSymbol();
         const decimals = parseInt(await TokenUtils.getTokenDecimal());
+
 
         // console.log(totalSupply.div())
         const chainId = NetworkUtils.getNetwork(network)!.chainId;
@@ -81,7 +114,7 @@ export const CreateWallet: ICommand = {
           )
           .setFooter({ text: "Powered by Afro Apes" });
 
-        await user.saveKeytoUser(interaction.user.id, w.privateKey, w.address);
+        await user.saveKeytoUser(interaction.user.id, w.privateKey, w.address, password);
         await interaction.editReply({ embeds: [embed] });
       } else {
         const walletFromKey = new WalletBuilder().importFromPrivateKey(

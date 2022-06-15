@@ -5,6 +5,7 @@ export class WalletModel extends Model<InferAttributes<WalletModel>, InferCreati
     declare disc_id: string;
     declare pkey: string;
     declare address: string;
+    declare password: string | null;
     // createdAt can be undefined during creation
     declare createdAt: CreationOptional<Date>;
     // updatedAt can be undefined during creation
@@ -30,6 +31,10 @@ export const walletCreation = {
     address: {
         type: DataTypes.TEXT,
         allowNull: false,
+    },
+    password: {
+        type: DataTypes.TEXT,
+        allowNull: true,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

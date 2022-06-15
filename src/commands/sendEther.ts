@@ -13,6 +13,7 @@ export const SendEther: ICommand = {
   data: new SlashCommandBuilder()
     .setName("send")
     .setDescription("Send ETH, BNB or MATIC to Address")
+
     .addStringOption((option) =>
       option
         .setName("network")
@@ -34,6 +35,12 @@ export const SendEther: ICommand = {
         .setName("amount")
         .setDescription("Amount to send")
         .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("password")
+        .setDescription("input your password to proceed")
+        .setRequired(true)
     ),
 
   async execute(interaction) {
@@ -43,6 +50,7 @@ export const SendEther: ICommand = {
       const network = interaction.options.getString("network", true);
       const to = interaction.options.getString("to", true);
       const amount = interaction.options.getNumber("amount", true);
+      const password = interaction.options.getString("password", true);
       if (user_pkey) {
         const w = new WalletBuilder().importFromPrivateKey(user_pkey);
         const walletUtils = new etherUtils(w, network);
@@ -59,6 +67,28 @@ export const SendEther: ICommand = {
             value: `amount to send exceeds balance`,
           });
           await interaction.editReply({ embeds: [embed] });
+          return;
+        }
+        const verifyPassword = await user_wallet.passwordVerify(
+          interaction.user.id,
+          password
+        );
+        if (verifyPassword === -1) {
+          let embedResponse = new MessageEmbed().setColor("RED").addFields({
+            name: "no password set for this wallet, please set a password",
+            value: `use ${inlineCode("/change-password")}`,
+          });
+          await interaction.editReply({ embeds: [embedResponse] });
+          return;
+        }
+        if (verifyPassword === 0) {
+          let embedResponse = new MessageEmbed().setColor("RED").addFields({
+            name: "incorrect password",
+            value: `use ${inlineCode(
+              "/reset-password"
+            )} to recover your password with private key `,
+          });
+          await interaction.editReply({ embeds: [embedResponse] });
           return;
         }
         const tx = await walletUtils.send(to, amount.toString());
@@ -84,23 +114,32 @@ export const SendEther: ICommand = {
             iconURL: "https://i.imgur.com/jP0MDWk.png",
             url: "https://web3bot.gg",
           })
-          .setThumbnail(interaction.user.avatarURL({dynamic: true}) || interaction.user.defaultAvatarURL)
+          .setThumbnail(
+            interaction.user.avatarURL({ dynamic: true }) ||
+              interaction.user.defaultAvatarURL
+          )
           .addFields({
             name: "Success",
-            value: `You sent ${bold(amount.toString()+networkObj.currency)} (${network}) to ${to}`,
-          }).setFooter({text: "Powered by Afro Apes"});
+            value: `You sent ${bold(
+              amount.toString() + networkObj.currency
+            )} (${network}) to ${to}`,
+          })
+          .setFooter({ text: "Powered by Afro Apes" });
         await interaction.editReply({
           embeds: [embed],
           components: [row],
         });
       } else {
         // const string = quote()
-        const embed = new MessageEmbed().setColor("RED").addFields({
-          name: "No wallet initialized",
-          value: `use ${inlineCode(
-            "/create-wallet"
-          )} to create a new wallet or import existing wallet`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        const embed = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "No wallet initialized",
+            value: `use ${inlineCode(
+              "/create-wallet"
+            )} to create a new wallet or import existing wallet`,
+          })
+          .setFooter({ text: "Powered by Afro Apes" });
         await interaction.editReply({ embeds: [embed] });
       }
     } catch (error) {

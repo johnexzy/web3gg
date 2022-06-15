@@ -30,6 +30,7 @@ export const Wallet: ICommand = {
       const account = interaction.user;
       const network = interaction.options.getString("network", true);
       const user_pkey = await user.fromIdGetKey(account.id);
+      console.log(user_pkey);
       if (!user_pkey) {
         // const string = quote()
         const embed = new MessageEmbed().setColor("RED").addFields({
@@ -96,7 +97,8 @@ export const Wallet: ICommand = {
         `looking for a token? use ${inlineCode(
           "/import-token"
         )} command to import token`
-      ).setFooter({ text: "Powered by Afro Apes" });
+      ).setFooter({ text: "Powered by Afro Apes", }).setTimestamp();
+
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       console.log(error);
