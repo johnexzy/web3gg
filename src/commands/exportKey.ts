@@ -5,7 +5,7 @@ import { MessageEmbed } from "discord.js";
 import UserWallet from "../controllers/Wallets";
 const user_wallet = new UserWallet();
 
-export const Address: ICommand = {
+export const ExportKey: ICommand = {
   data: new SlashCommandBuilder()
     .setName("export-private-key")
     .setDescription("recover private key")

@@ -5,7 +5,7 @@ import { MessageEmbed } from "discord.js";
 import UserWallet from "../controllers/Wallets";
 const user_wallet = new UserWallet();
 
-export const Address: ICommand = {
+export const ForgotPassword: ICommand = {
   data: new SlashCommandBuilder()
     .setName("reset-password")
     .setDescription("Reset password with private key")
