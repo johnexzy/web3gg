@@ -48,7 +48,7 @@ export default class UserWallet {
       const User = await this.wallets.findOne({
         where: { disc_id },
       });
-      console.log(User?.pkey);
+      //console.log(User?.pkey);
       if (!User) {
         return "";
       }

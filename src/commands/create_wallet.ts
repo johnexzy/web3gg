@@ -42,7 +42,7 @@ export const CreateWallet: ICommand = {
       const user_pkey = await user.fromIdGetKey(interaction.user.id);
       const password = interaction.options.getString("set-password", true);
       const confirm_password = interaction.options.getString("confirm-password", true);
-      console.log(password, confirm_password)
+      //console.log(password, confirm_password)
       if (password !== confirm_password) {
         const err_passwords = new MessageEmbed().setColor("RED").addFields({
           name: "❌ Passwords don't match",
