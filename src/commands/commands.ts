@@ -15,7 +15,7 @@ export const Commands: ICommand = {
         .setDescription("All registered slash commands\n\n")
         .setFooter({text: "Powered by Afro Apes"})
         .setAuthor({
-          name: "web3bot",
+          name: "Web3Bot",
           iconURL: "https://i.imgur.com/jP0MDWk.png",
           url: "https://web3bot.gg",
         })

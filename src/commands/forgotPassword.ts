@@ -61,7 +61,7 @@ export const ForgotPassword: ICommand = {
               interaction.user.defaultAvatarURL
           )
           .setAuthor({
-            name: "web3bot",
+            name: "Web3Bot",
             iconURL: "https://i.imgur.com/jP0MDWk.png",
             url: "https://web3bot.gg",
           })

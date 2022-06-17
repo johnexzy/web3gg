@@ -129,7 +129,7 @@ export const TipEther: ICommand = {
 
       const embed = new MessageEmbed()
         .setAuthor({
-          name: "web3bot",
+          name: "Web3Bot",
           iconURL: "https://i.imgur.com/jP0MDWk.png",
           url: "https://web3bot.gg",
         })
