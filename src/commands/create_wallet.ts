@@ -114,7 +114,7 @@ export const CreateWallet: ICommand = {
               "🚨🚨 use /export-private-key to easily copy your private key. "
             )}
             `
-          )
+          ).setTimestamp()
           .setThumbnail(
             interaction.user.avatarURL({ dynamic: true }) ||
               interaction.user.defaultAvatarURL

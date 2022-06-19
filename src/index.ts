@@ -12,11 +12,11 @@ import { onReady } from "./events/onReady";
   web3gg.on("ready", async () => await onReady(web3gg));
   web3gg.once("ready", async () => {
     console.log("web3gg ready");
-    // await sequelize.sync();
+    await sequelize.sync();
     // await sequelize.sync({alter: true});
     
       // =======DANGER: TEST-ONLY==========
-    await sequelize.sync({force: true});
+    // await sequelize.sync({force: true});
     
   });
   CommandList.forEach((Command) => commands.set(Command.data.name, Command));
