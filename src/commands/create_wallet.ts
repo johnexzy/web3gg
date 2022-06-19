@@ -97,9 +97,10 @@ export const CreateWallet: ICommand = {
           .setDescription(
             `Never disclose this key. Anyone with your private keys can steal any assets held in your account. (${inlineCode(
               "only you can see this"
-            )} \n
-            ${codeBlock('excel', 'use /export to to get your private key and keep it safe.')}
-            )`
+            )}) \n
+            ${codeBlock('excel', '🚨🚨 without your private-keys or password, your funds may be lost. Always backup your private-keys as they can be used to recover or import wallet outside of discord')} \n
+            ${codeBlock('excel', '🚨🚨 use /export-private-key to easily copy your private key. ')}
+            `
           )
           .setThumbnail(
             interaction.user.avatarURL({ dynamic: true }) ||

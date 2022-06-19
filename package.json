@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node -r dotenv/config ./prod/index.js",
+    "deploy:test": "git push heroku",
     "cz": "cz"
   },
   "repository": {
