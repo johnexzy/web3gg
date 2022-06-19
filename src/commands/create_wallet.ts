@@ -2,7 +2,8 @@ import {
   SlashCommandBuilder,
   inlineCode,
   bold,
-  spoiler, codeBlock
+  spoiler,
+  codeBlock,
 } from "@discordjs/builders";
 import { ICommand } from "../types/types";
 import { MessageEmbed } from "discord.js";
@@ -41,21 +42,30 @@ export const CreateWallet: ICommand = {
     try {
       const user_pkey = await user.fromIdGetKey(interaction.user.id);
       const password = interaction.options.getString("set-password", true);
-      const confirm_password = interaction.options.getString("confirm-password", true);
+      const confirm_password = interaction.options.getString(
+        "confirm-password",
+        true
+      );
       //console.log(password, confirm_password)
       if (password !== confirm_password) {
-        const err_passwords = new MessageEmbed().setColor("RED").addFields({
-          name: "❌ Passwords don't match",
-          value: `\u200b`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        const err_passwords = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "❌ Passwords don't match",
+            value: `\u200b`,
+          })
+          .setFooter({ text: "Powered by Afro Apes" });
         await interaction.editReply({ embeds: [err_passwords] });
         return;
       }
       if (password.length < 5) {
-        const err_passwords = new MessageEmbed().setColor("RED").addFields({
-          name: "❌ Passwords should be at least 6 characters length",
-          value: `\u200b`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        const err_passwords = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "❌ Passwords should be at least 6 characters length",
+            value: `\u200b`,
+          })
+          .setFooter({ text: "Powered by Afro Apes" });
         await interaction.editReply({ embeds: [err_passwords] });
         return;
       }
@@ -66,17 +76,14 @@ export const CreateWallet: ICommand = {
           ? new WalletBuilder().importFromPrivateKey(_privateKey)
           : new WalletBuilder().initializeNewWallet();
 
-
         // Add Tether to wallet
         const Tether = process.env.TETHER!;
         const network = "mainnet";
         const TokenUtils = new tokenUtils(w, "mainnet", Tether);
 
-
         const name = await TokenUtils.getTokenName();
         const symbol = await TokenUtils.getTokenSymbol();
         const decimals = parseInt(await TokenUtils.getTokenDecimal());
-
 
         // console.log(totalSupply.div())
         const chainId = NetworkUtils.getNetwork(network)!.chainId;
@@ -98,8 +105,14 @@ export const CreateWallet: ICommand = {
             `Never disclose this key. Anyone with your private keys can steal any assets held in your account. (${inlineCode(
               "only you can see this"
             )}) \n
-            ${codeBlock('excel', '🚨🚨 without your private-keys or password, your funds may be lost. Always backup your private-keys as they can be used to recover or import wallet outside of discord')} \n
-            ${codeBlock('excel', '🚨🚨 use /export-private-key to easily copy your private key. ')}
+            ${codeBlock(
+              "excel",
+              "🚨🚨 without your private-keys or password, your funds may be lost. Always backup your private-keys as they can be used to recover or import wallet outside of discord"
+            )} \n
+            ${codeBlock(
+              "excel",
+              "🚨🚨 use /export-private-key to easily copy your private key. "
+            )}
             `
           )
           .setThumbnail(
@@ -112,12 +125,24 @@ export const CreateWallet: ICommand = {
             url: "https://web3bot.gg",
           })
           .addFields(
-            { name: "Private Key:", value: `${spoiler(w.privateKey)}` },
-            { name: "Wallet Address", value: `${w.address}` }
+            {
+              name: "Private Key: 👇 Tap to reveal",
+              value: `${spoiler(w.privateKey)}`,
+            },
+            { name: "Wallet Address", value: `${w.address}` },
+            {
+              name: "\u200b",
+              value: "Let's explore web3 on discord. LFG🔥🔥🔥",
+            }
           )
           .setFooter({ text: "Powered by Afro Apes" });
 
-        await user.saveKeytoUser(interaction.user.id, w.privateKey, w.address, password);
+        await user.saveKeytoUser(
+          interaction.user.id,
+          w.privateKey,
+          w.address,
+          password
+        );
         await interaction.editReply({ embeds: [embed] });
       } else {
         const walletFromKey = new WalletBuilder().importFromPrivateKey(
