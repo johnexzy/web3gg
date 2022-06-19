@@ -132,7 +132,7 @@ export const CreateWallet: ICommand = {
             { name: "Wallet Address", value: `${w.address}` },
             {
               name: "\u200b",
-              value: "Let's explore web3 on discord. LFG🔥🔥🔥",
+              value: `Let's explore web3 on discord. LFG🔥🔥🔥 \n view all commands with ${inlineCode('/commands')} `,
             }
           )
           .setFooter({ text: "Powered by Afro Apes" });
