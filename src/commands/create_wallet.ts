@@ -2,7 +2,7 @@ import {
   SlashCommandBuilder,
   inlineCode,
   bold,
-  spoiler,
+  spoiler, codeBlock
 } from "@discordjs/builders";
 import { ICommand } from "../types/types";
 import { MessageEmbed } from "discord.js";
@@ -97,7 +97,9 @@ export const CreateWallet: ICommand = {
           .setDescription(
             `Never disclose this key. Anyone with your private keys can steal any assets held in your account. (${inlineCode(
               "only you can see this"
-            )})`
+            )} \n
+            ${codeBlock('excel', 'use /export to to get your private key and keep it safe.')}
+            )`
           )
           .setThumbnail(
             interaction.user.avatarURL({ dynamic: true }) ||
