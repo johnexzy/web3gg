@@ -68,7 +68,7 @@ export const TipEther: ICommand = {
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
         });
-        await interaction.channel?.send({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
         return;
       }
       const w_sender = new WalletBuilder().importFromPrivateKey(user_pkey);
@@ -160,7 +160,7 @@ export const TipEther: ICommand = {
         .setFooter({ text: "Powered by Afro Apes" })
         .setURL(networkObj.explorer + "/tx/" + tx.hash)
         .setTimestamp();
-      await interaction.editReply({ content: "\u200b" });
+      await interaction.deleteReply();
       await interaction.channel?.send({
         embeds: [embed],
         components: [row],

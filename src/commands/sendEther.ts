@@ -125,8 +125,8 @@ export const SendEther: ICommand = {
               interaction.user.defaultAvatarURL
           )
           .addFields({
-            name: "Success",
-            value: `You sent ${bold(
+            name: "Transaction Successfull🎉🎉",
+            value: `${interaction.user.toString()} transferred ${bold(
               amount.toString() + networkObj.currency
             )} (${network}) to ${to}`,
           })
