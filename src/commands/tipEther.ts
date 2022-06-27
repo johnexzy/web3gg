@@ -160,7 +160,9 @@ export const TipEther: ICommand = {
         .setFooter({ text: "Powered by Afro Apes" })
         .setURL(networkObj.explorer + "/tx/" + tx.hash)
         .setTimestamp();
-      await interaction.deleteReply();
+      await interaction.editReply({
+        content: "Transaction Successfull",
+      });
       await interaction.channel?.send({
         embeds: [embed],
         components: [row],
