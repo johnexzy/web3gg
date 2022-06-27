@@ -82,10 +82,13 @@ export const TipEther: ICommand = {
       if (
         !utils.parseEther(bal).gt(utils.parseEther(amount.toString()).add(gas))
       ) {
-        const embed = new MessageEmbed().setColor("RED").addFields({
-          name: "Insufficient Funds",
-          value: `amount to send exceeds balance`,
-        });
+        const embed = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "Insufficient Funds",
+            value: `amount to send exceeds balance`,
+          })
+          .setTimestamp();
         await interaction.editReply({ embeds: [embed] });
         return;
       }
@@ -102,21 +105,27 @@ export const TipEther: ICommand = {
         return;
       }
       if (verifyPassword === 0) {
-        let embedResponse = new MessageEmbed().setColor("RED").addFields({
-          name: "incorrect password",
-          value: `use ${inlineCode(
-            "/reset-password"
-          )} to recover your password with private key `,
-        });
+        let embedResponse = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "incorrect password",
+            value: `use ${inlineCode(
+              "/reset-password"
+            )} to recover your password with private key `,
+          })
+          .setTimestamp();
         await interaction.editReply({ embeds: [embedResponse] });
         return;
       }
       const tx = await walletUtils.send(addr_recipient, amount.toString());
       if (!tx) {
-        const embed = new MessageEmbed().setColor("RED").addFields({
-          name: "Incorrect Address",
-          value: `Please verify address`,
-        });
+        const embed = new MessageEmbed()
+          .setColor("RED")
+          .addFields({
+            name: "Incorrect Address",
+            value: `Please verify address`,
+          })
+          .setTimestamp();
         await interaction.editReply({ embeds: [embed] });
         return;
       }
@@ -149,7 +158,9 @@ export const TipEther: ICommand = {
           `use ${inlineCode("/wallet " + network)} to view balance`
         )
         .setFooter({ text: "Powered by Afro Apes" })
-        .setURL(networkObj.explorer + "/tx/" + tx.hash);
+        .setURL(networkObj.explorer + "/tx/" + tx.hash)
+        .setTimestamp();
+      await interaction.editReply({ content: "\u200b" });
       await interaction.channel?.send({
         embeds: [embed],
         components: [row],

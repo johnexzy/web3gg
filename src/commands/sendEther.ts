@@ -62,10 +62,13 @@ export const SendEther: ICommand = {
             .parseEther(bal)
             .gt(utils.parseEther(amount.toString()).add(gas))
         ) {
-          const embed = new MessageEmbed().setColor("RED").addFields({
-            name: "Insufficient Funds",
-            value: `amount to send exceeds balance`,
-          });
+          const embed = new MessageEmbed()
+            .setColor("RED")
+            .addFields({
+              name: "Insufficient Funds",
+              value: `amount to send exceeds balance`,
+            })
+            .setTimestamp();
           await interaction.editReply({ embeds: [embed] });
           return;
         }
@@ -74,10 +77,13 @@ export const SendEther: ICommand = {
           password
         );
         if (verifyPassword === -1) {
-          let embedResponse = new MessageEmbed().setColor("RED").addFields({
-            name: "no password set for this wallet, please set a password",
-            value: `use ${inlineCode("/change-password")}`,
-          });
+          let embedResponse = new MessageEmbed()
+            .setColor("RED")
+            .addFields({
+              name: "no password set for this wallet, please set a password",
+              value: `use ${inlineCode("/change-password")}`,
+            })
+            .setTimestamp();
           await interaction.editReply({ embeds: [embedResponse] });
           return;
         }
@@ -124,11 +130,14 @@ export const SendEther: ICommand = {
               amount.toString() + networkObj.currency
             )} (${network}) to ${to}`,
           })
+          .setTimestamp()
           .setFooter({ text: "Powered by Afro Apes" });
+        await interaction.editReply({ content: "\u200b" });
         await interaction.channel?.send({
           embeds: [embed],
           components: [row],
         });
+        return;
       } else {
         // const string = quote()
         const embed = new MessageEmbed()
@@ -139,6 +148,7 @@ export const SendEther: ICommand = {
               "/create-wallet"
             )} to create a new wallet or import existing wallet`,
           })
+          .setTimestamp()
           .setFooter({ text: "Powered by Afro Apes" });
         await interaction.editReply({ embeds: [embed] });
       }
