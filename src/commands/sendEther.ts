@@ -132,7 +132,7 @@ export const SendEther: ICommand = {
           })
           .setTimestamp()
           .setFooter({ text: "Powered by Afro Apes" });
-        await interaction.editReply({ content: "\u200b" });
+        await interaction.deleteReply();
         await interaction.channel?.send({
           embeds: [embed],
           components: [row],
