@@ -43,7 +43,7 @@ export const TipEther: ICommand = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: false });
+    await interaction.deferReply({ ephemeral: true });
     try {
       const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
       const network = interaction.options.getString("network") || "mainnet";
@@ -68,7 +68,7 @@ export const TipEther: ICommand = {
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
         });
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.channel?.send({ embeds: [embed] });
         return;
       }
       const w_sender = new WalletBuilder().importFromPrivateKey(user_pkey);
@@ -150,7 +150,7 @@ export const TipEther: ICommand = {
         )
         .setFooter({ text: "Powered by Afro Apes" })
         .setURL(networkObj.explorer + "/tx/" + tx.hash);
-      await interaction.editReply({
+      await interaction.channel?.send({
         embeds: [embed],
         components: [row],
       });

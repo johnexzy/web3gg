@@ -44,7 +44,7 @@ export const SendEther: ICommand = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: false });
+    await interaction.deferReply({ ephemeral: true });
     try {
       const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
       const network = interaction.options.getString("network", true);
@@ -125,7 +125,7 @@ export const SendEther: ICommand = {
             )} (${network}) to ${to}`,
           })
           .setFooter({ text: "Powered by Afro Apes" });
-        await interaction.editReply({
+        await interaction.channel?.send({
           embeds: [embed],
           components: [row],
         });

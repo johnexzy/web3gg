@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, inlineCode, bold } from "@discordjs/builders";
+import { SlashCommandBuilder, inlineCode, bold, codeBlock } from "@discordjs/builders";
 import { ICommand } from "../types/types";
 import { MessageEmbed } from "discord.js";
 import etherUtils from "../utils/etherUtils.js";
