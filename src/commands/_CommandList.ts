@@ -1,7 +1,7 @@
 import { ICommand } from "../types/types";
 // import { Ping } from "./ping";
 import { Wallet } from "./wallet";
-import { CreateWallet } from "./create_wallet";
+import { CreateWallet } from "./createWallet";
 import { Commands } from "./commands";
 import { Address } from "./address";
 import {AddToken} from "./addToken";
