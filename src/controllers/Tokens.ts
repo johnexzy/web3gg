@@ -128,7 +128,7 @@ export default class Tokens {
           break;
 
         default:
-          apiKeys = []
+          apiKeys = [];
           break;
       }
 
@@ -161,8 +161,8 @@ export default class Tokens {
               };
             })
           : [];
-          
-      return tokens.filter((v,i) => tokens.indexOf(v) === i);
+
+      return tokens.filter((v, i) => tokens.indexOf(v) === i);
     } catch (error) {
       console.error(error);
       return [];
