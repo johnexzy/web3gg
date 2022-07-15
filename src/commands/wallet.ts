@@ -49,7 +49,7 @@ export const Wallet: ICommand = {
       const embed = new MessageEmbed()
         .setTitle(`Wallet Balance for ${networkObj.name}`)
         .setColor("GREEN")
-        .setAuthor({ name: 'Web3Bot', iconURL: 'https://i.imgur.com/jP0MDWk.png', url: 'https://web3bot.gg' })
+        .setAuthor({ name: 'Web3Bot', iconURL: 'https://i.imgur.com/YYTwF0D.png', url: 'https://web3bot.gg' })
         .setThumbnail(account.avatarURL({dynamic: true}) || account.defaultAvatarURL)
         .addFields(
           {

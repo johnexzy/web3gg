@@ -76,7 +76,7 @@ export const SetPassword: ICommand = {
         )
         .setAuthor({
           name: "Web3Bot",
-          iconURL: "https://i.imgur.com/jP0MDWk.png",
+          iconURL: "https://i.imgur.com/YYTwF0D.png",
           url: "https://web3bot.gg",
         })
         .setFooter({ text: "Powered by Afro Apes" });
