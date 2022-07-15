@@ -139,8 +139,8 @@ export const TipEther: ICommand = {
       const embed = new MessageEmbed()
         .setAuthor({
           name: "Web3Bot",
-          iconURL: "https://i.imgur.com/YYTwF0D.png",
-          url: "https://web3bot.gg",
+          iconURL: process.env.ICON_URL,
+          url: process.env.WEBSITE,
         })
         .setColor("GREEN")
         .setThumbnail(

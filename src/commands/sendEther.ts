@@ -117,8 +117,8 @@ export const SendEther: ICommand = {
           .setColor("GREEN")
           .setAuthor({
             name: "Web3Bot",
-            iconURL: "https://i.imgur.com/YYTwF0D.png",
-            url: "https://web3bot.gg",
+            iconURL: process.env.ICON_URL,
+            url: process.env.WEBSITE,
           })
           .setThumbnail(
             interaction.user.avatarURL({ dynamic: true }) ||

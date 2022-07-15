@@ -100,7 +100,7 @@ export const AddToken: ICommand = {
         .addField("Symbol", symbol, true)
         .addField("Network", network)
         .addField("Total Supply", totalSupply.toString())
-        .setAuthor({ name: 'Web3Bot', iconURL: 'https://i.imgur.com/YYTwF0D.png', url: 'https://web3bot.gg' })
+        .setAuthor({ name: 'Web3Bot', iconURL: process.env.ICON_URL, url: process.env.WEBSITE })
         .setThumbnail(account.avatarURL({dynamic: true}) || account.defaultAvatarURL)
         .setFooter({
           text: `use ${inlineCode(
