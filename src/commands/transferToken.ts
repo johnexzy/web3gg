@@ -98,6 +98,18 @@ export const TransferToken: ICommand = {
           return;
         }
 
+        if (!(tokenBalance >= amount)) {
+            const embed = new MessageEmbed()
+              .setColor("RED")
+              .addFields({
+                name: "Insufficient Amount to transfer",
+                value: `amount to send exceeds balance`,
+              })
+              .setTimestamp();
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          }
+          
         const verifyPassword = await user_wallet.passwordVerify(
           interaction.user.id,
           password

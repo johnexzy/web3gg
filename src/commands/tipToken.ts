@@ -5,7 +5,6 @@ import {
   MessageEmbed,
   MessageActionRow,
   MessageButton,
-  GuildMemberRoleManager,
 } from "discord.js";
 import WalletBuilder from "../common/wallet";
 import UserWallet from "../controllers/Wallets";
@@ -40,7 +39,7 @@ export const TipToken: ICommand = {
     .addUserOption((option) =>
       option
         .setName("to")
-        .setDescription("Tip ethers to this user")
+        .setDescription("Tip token to this user")
         .setRequired(true)
     )
     .addNumberOption((option) =>
@@ -61,12 +60,13 @@ export const TipToken: ICommand = {
     const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
     const network = interaction.options.getString("network", true);
     const to = interaction.options.getUser("to", true);
-    const w_recipient_key = await user_wallet.fromIdGetKey(to.id);
-    const token_address = interaction.options.getString("token_address", true);
-    const amount = interaction.options.getNumber("amount", true);
-    const password = interaction.options.getString("password", true);
+
     try {
       if (user_pkey) {
+        const w_recipient_key = await user_wallet.fromIdGetKey(to.id);
+        const token_address = interaction.options.getString("token_address", true);
+        const amount = interaction.options.getNumber("amount", true);
+        const password = interaction.options.getString("password", true);
         const wallet = new WalletBuilder().importFromPrivateKey(user_pkey);
         const TokenUtils = new tokenUtils(wallet, network, token_address);
         const networkObj = NetworkUtils.getNetwork(network)!;
@@ -104,12 +104,24 @@ export const TipToken: ICommand = {
         const etherUtils = new EtherUtils(wallet, network);
 
         const coinBalance = await etherUtils.balance();
-
+        
         if (!utils.parseEther(coinBalance).gt(gasPrice)) {
           const embed = new MessageEmbed()
             .setColor("RED")
             .addFields({
               name: "Insufficient Fund to pay gas",
+              value: `amount to send exceeds balance`,
+            })
+            .setTimestamp();
+          await interaction.editReply({ embeds: [embed] });
+          return;
+        }
+
+        if (!(tokenBalance >= amount)) {
+          const embed = new MessageEmbed()
+            .setColor("RED")
+            .addFields({
+              name: "Insufficient Amount to transfer",
               value: `amount to send exceeds balance`,
             })
             .setTimestamp();
