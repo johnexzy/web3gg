@@ -50,4 +50,15 @@ export default [
     explorer: "https://bscscan.com",
     api: "https://api.bscscan.com/api?module=account&action=tokentx",
   },
+  {
+    network: 'goerli',
+    name: 'Goerli Ethereum',
+    value: 'goerli',
+    label: 'Goerli Ethereum',
+    chainId: 5,
+    currency: 'ETH',
+    rpc: ['https://eth-goerli.g.alchemy.com/v2/MbhgMXsdTaM8wSMpDfz5uDI-J8G_IJ3j'],
+    explorer: 'https://goerli.etherscan.io',
+    api: 'https://api-goerli.etherscan.io/api?module=account&action=tokentx',
+  },
 ] as NetworkType[];
