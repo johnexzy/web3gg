@@ -23,6 +23,7 @@ export const SendEther: ICommand = {
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
         .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Goerli Testnet", "goerli")
     )
     .addStringOption((option) =>
       option
