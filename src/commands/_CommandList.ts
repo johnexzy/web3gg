@@ -21,7 +21,7 @@ export const CommandList: ICommand[] = [
   AddToken,
   Wallet,
   TipEther,
-  TipToken,
+  // TipToken,
   SendEther,
   TransferToken,
   SetPassword,
