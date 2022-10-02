@@ -90,7 +90,7 @@ export const TransferToken: ICommand = {
           const embed = new MessageEmbed()
             .setColor("RED")
             .addFields({
-              name: "Insufficient Funds",
+              name: "Insufficient Fund to pay gas",
               value: `amount to send exceeds balance`,
             })
             .setTimestamp();

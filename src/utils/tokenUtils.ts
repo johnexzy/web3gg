@@ -53,7 +53,7 @@ export default class TokenUtils extends Provider {
     if (!utils.isAddress(address)) {
       return false;
     }
-    const tx: TransactionResponse = (await this.connectedContract()).transfer(
+    const tx: TransactionResponse = await (await this.connectedContract()).transfer(
       address,
       amount
     );
