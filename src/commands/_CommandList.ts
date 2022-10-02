@@ -9,6 +9,7 @@ import { SendEther } from "./sendEther";
 import { TipEther } from "./tipEther";
 // import { MigrateToken } from "./migrateToken";
 import { TransferToken } from "./transferToken";
+import { TipToken } from "./tipToken";
 import { SetPassword } from "./setPassword";
 import { ForgotPassword } from "./forgotPassword";
 import { ExportKey } from "./exportKey";
@@ -20,6 +21,7 @@ export const CommandList: ICommand[] = [
   AddToken,
   Wallet,
   TipEther,
+  TipToken,
   SendEther,
   TransferToken,
   SetPassword,
