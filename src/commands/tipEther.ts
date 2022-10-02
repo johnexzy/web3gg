@@ -22,6 +22,7 @@ export const TipEther: ICommand = {
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
         .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Goerli Testnet", "goerli")
     )
     .addUserOption((option) =>
       option

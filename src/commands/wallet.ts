@@ -22,6 +22,7 @@ export const Wallet: ICommand = {
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
         .addChoice("Rinkeby", "rinkeby")
+        .addChoice("Goerli Testnet", "goerli")
     ),
 
   async execute(interaction) {

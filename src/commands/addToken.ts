@@ -20,6 +20,7 @@ export const AddToken: ICommand = {
         .addChoice("Ethereum", "mainnet")
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
+        .addChoice("Goerli Testnet", "goerli")
     )
     .addStringOption((option) =>
       option
