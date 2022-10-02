@@ -31,7 +31,7 @@ export const TransferToken: ICommand = {
     )
     .addStringOption((option) =>
       option
-        .setName("token address")
+        .setName("token_address")
         .setDescription("Contract address of erc20 token")
         .setRequired(true)
     )
@@ -59,7 +59,7 @@ export const TransferToken: ICommand = {
     const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
     const network = interaction.options.getString("network", true);
     const to = interaction.options.getString("to", true);
-    const token_address = interaction.options.getString("token address", true);
+    const token_address = interaction.options.getString("token_address", true);
     const amount = interaction.options.getNumber("amount", true);
     const password = interaction.options.getString("password", true);
     try {
