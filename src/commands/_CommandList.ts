@@ -24,7 +24,7 @@ export const CommandList: ICommand[] = [
   // TipToken,
   SendEther,
   TransferToken,
-  TipToken,
+  // TipToken,
   SetPassword,
   ForgotPassword,
   ExportKey,
