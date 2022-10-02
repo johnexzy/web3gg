@@ -16,7 +16,7 @@ const user_wallet = new UserWallet();
 
 export const TipToken: ICommand = {
   data: new SlashCommandBuilder()
-    .setName("transferToMember")
+    .setName("tipToken")
     .setDescription(
       `Transfer ${inlineCode("ERC20")} token to a discord server memeber.`
     )
