@@ -97,7 +97,7 @@ export const Wallet: ICommand = {
         `looking for a token? use ${inlineCode(
           "/import-token"
         )} command to import token`
-      ).setFooter({ text: "Powered by Afro Apes", }).setTimestamp();
+      ).setFooter({ text: "Powered by AfroLabs", }).setTimestamp();
 
       await interaction.editReply({ embeds: [embed] });
     } catch (error) {

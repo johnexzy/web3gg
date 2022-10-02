@@ -37,7 +37,7 @@ export const SetPassword: ICommand = {
           value: `use ${inlineCode(
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        }).setFooter({text: "Powered by AfroLabs"});
         await interaction.editReply({ embeds: [embed] });
         return;
       }
@@ -45,7 +45,7 @@ export const SetPassword: ICommand = {
         const err_passwords = new MessageEmbed().setColor("RED").addFields({
           name: "❌ Passwords should be at least 6 characters length",
           value: `\u200b`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        }).setFooter({text: "Powered by AfroLabs"});
         await interaction.editReply({ embeds: [err_passwords] });
         return;
       }
@@ -79,7 +79,7 @@ export const SetPassword: ICommand = {
           iconURL: process.env.ICON_URL,
           url: process.env.WEBSITE,
         })
-        .setFooter({ text: "Powered by Afro Apes" });
+        .setFooter({ text: "Powered by AfroLabs" });
       await interaction.editReply({ embeds: [embed] });
       return;
     } catch (error) {

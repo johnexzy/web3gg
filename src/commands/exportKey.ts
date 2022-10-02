@@ -34,7 +34,7 @@ export const ExportKey: ICommand = {
               "/create-wallet"
             )} to create a new wallet or import existing wallet`,
           })
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
         await interaction.editReply({ embeds: [embed] });
         return;
       }
@@ -53,7 +53,7 @@ export const ExportKey: ICommand = {
               "/reset-password"
             )} to reset password with private key`,
           })
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
         await interaction.editReply({ embeds: [embed] });
         return;
       }

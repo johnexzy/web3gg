@@ -132,7 +132,7 @@ export const TipEther: ICommand = {
       const row = new MessageActionRow().addComponents(
         new MessageButton()
           .setURL(`${networkObj.explorer}/tx/${tx.hash}`)
-          .setLabel("View transaction on explorer")
+          .setLabel("View transaction on explorer") 
           .setStyle("LINK")
       );
 
@@ -157,7 +157,7 @@ export const TipEther: ICommand = {
           `\u200b`,
           `use ${inlineCode("/wallet " + network)} to view balance`
         )
-        .setFooter({ text: "Powered by Afro Apes" })
+        .setFooter({ text: "Powered by AfroLabs" })
         .setURL(networkObj.explorer + "/tx/" + tx.hash)
         .setTimestamp();
       await interaction.editReply({

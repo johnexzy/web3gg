@@ -14,7 +14,6 @@ export default class TokenUtils extends Provider {
     return await this.wallet.connect(this.provider);
   }
   async connectedContract(): Promise<Contract> {
-    console.log(this.contractAddress);
     const contract = new Contract(
       this.contractAddress,
       abi,
@@ -49,13 +48,20 @@ export default class TokenUtils extends Provider {
   }
   async transfer(
     address: string,
-    amount: string
-  ): Promise<TransactionResponse> {
+    amount: number
+  ): Promise<TransactionResponse | false> {
+    if (!utils.isAddress(address)) {
+      return false;
+    }
     const tx: TransactionResponse = (await this.connectedContract()).transfer(
       address,
-      utils.parseEther(amount.toString())
+      amount
     );
     await tx.wait();
     return tx;
+  }
+  async estimateGasPriceTransfer() {
+    const fee = await this.provider.getFeeData();
+    return fee.maxFeePerGas!.mul(67000);
   }
 }

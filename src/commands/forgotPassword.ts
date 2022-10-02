@@ -35,7 +35,7 @@ export const ForgotPassword: ICommand = {
           value: `use ${inlineCode(
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        }).setFooter({text: "Powered by AfroLabs"});
         await interaction.editReply({ embeds: [embed] });
         return;
       }
@@ -65,7 +65,7 @@ export const ForgotPassword: ICommand = {
             iconURL: process.env.ICON_URL,
             url: process.env.WEBSITE,
           })
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
         await interaction.editReply({ embeds: [embed] });
         return;
       }

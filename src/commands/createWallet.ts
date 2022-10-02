@@ -54,7 +54,7 @@ export const CreateWallet: ICommand = {
             name: "❌ Passwords don't match",
             value: `\u200b`,
           })
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
         await interaction.editReply({ embeds: [err_passwords] });
         return;
       }
@@ -65,7 +65,7 @@ export const CreateWallet: ICommand = {
             name: "❌ Passwords should be at least 6 characters length",
             value: `\u200b`,
           })
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
         await interaction.editReply({ embeds: [err_passwords] });
         return;
       }
@@ -135,7 +135,7 @@ export const CreateWallet: ICommand = {
               value: `Let's explore web3 on discord. LFG🔥🔥🔥 \n view all commands with ${inlineCode('/commands')} `,
             }
           )
-          .setFooter({ text: "Powered by Afro Apes" });
+          .setFooter({ text: "Powered by AfroLabs" });
 
         await user.saveKeytoUser(
           interaction.user.id,

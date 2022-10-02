@@ -28,7 +28,7 @@ export const Address: ICommand = {
           value: `use ${inlineCode(
             "/create-wallet"
           )} to create a new wallet or import existing wallet`,
-        }).setFooter({text: "Powered by Afro Apes"});
+        }).setFooter({text: "Powered by AfroLabs"});
         await interaction.editReply({ embeds: [embed] });
         return;
       }

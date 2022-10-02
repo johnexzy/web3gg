@@ -1,19 +1,23 @@
 import { SlashCommandBuilder, inlineCode, bold } from "@discordjs/builders";
 import { ICommand } from "../types/types";
-import { MessageEmbed, MessageActionRow, MessageButton } from "discord.js";
-import WalletBuilder from "../common/wallet";
 import { utils } from "ethers";
-import TokenController from "../controllers/Tokens";
-import NetworkUtils from "../utils/networkUtils";
-import etherUtils from "../utils/etherUtils";
+import {
+  MessageEmbed,
+  MessageActionRow,
+  MessageButton,
+  GuildMemberRoleManager,
+} from "discord.js";
+import WalletBuilder from "../common/wallet";
 import UserWallet from "../controllers/Wallets";
+import NetworkUtils from "../utils/networkUtils";
+import tokenUtils from "../utils/tokenUtils";
+import EtherUtils from "../utils/etherUtils";
 const user_wallet = new UserWallet();
 
-export const SendEther: ICommand = {
+export const TransferToken: ICommand = {
   data: new SlashCommandBuilder()
-    .setName("send")
-    .setDescription("Send ETH, BNB or MATIC to Address")
-
+    .setName("transfer")
+    .setDescription(`Transfer ${inlineCode("ERC20")} token to address.`)
     .addStringOption((option) =>
       option
         .setName("network")
@@ -23,6 +27,13 @@ export const SendEther: ICommand = {
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
         .addChoice("Rinkeby Testnet", "rinkeby")
+        .addChoice("Goerli Testnet", "goerli")
+    )
+    .addStringOption((option) =>
+      option
+        .setName("token address")
+        .setDescription("Contract address of erc20 token")
+        .setRequired(true)
     )
     .addStringOption((option) =>
       option
@@ -45,23 +56,37 @@ export const SendEther: ICommand = {
 
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
+    const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
+    const network = interaction.options.getString("network", true);
+    const to = interaction.options.getString("to", true);
+    const token_address = interaction.options.getString("token address", true);
+    const amount = interaction.options.getNumber("amount", true);
+    const password = interaction.options.getString("password", true);
     try {
-      const user_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
-      const network = interaction.options.getString("network", true);
-      const to = interaction.options.getString("to", true);
-      const amount = interaction.options.getNumber("amount", true);
-      const password = interaction.options.getString("password", true);
       if (user_pkey) {
-        const w = new WalletBuilder().importFromPrivateKey(user_pkey);
-        const walletUtils = new etherUtils(w, network);
-        const bal = await walletUtils.balance();
-        const gas = await walletUtils.estimateGasPriceTransfer();
+        const wallet = new WalletBuilder().importFromPrivateKey(user_pkey);
+        const TokenUtils = new tokenUtils(wallet, network, token_address);
         const networkObj = NetworkUtils.getNetwork(network)!;
-        if (
-          !utils
-            .parseEther(bal)
-            .gt(utils.parseEther(amount.toString()).add(gas))
-        ) {
+        const name = await TokenUtils.getTokenName();
+        const symbol = await TokenUtils.getTokenSymbol();
+        const decimals = parseInt(await TokenUtils.getTokenDecimal());
+
+        // check balance
+
+        const tokenBalance =
+          parseInt((await TokenUtils.getTokenBalance()).toString()) /
+          Math.pow(10, decimals);
+
+        // amount in BigNumber
+        const amountInBigNumber = amount * Math.pow(10, decimals);
+
+        // check for gas fee
+        const gasPrice = await TokenUtils.estimateGasPriceTransfer();
+        const etherUtils = new EtherUtils(wallet, network);
+
+        const coinBalance = await etherUtils.balance();
+
+        if (!utils.parseEther(coinBalance).gt(gasPrice)) {
           const embed = new MessageEmbed()
             .setColor("RED")
             .addFields({
@@ -72,10 +97,12 @@ export const SendEther: ICommand = {
           await interaction.editReply({ embeds: [embed] });
           return;
         }
+
         const verifyPassword = await user_wallet.passwordVerify(
           interaction.user.id,
           password
         );
+
         if (verifyPassword === -1) {
           let embedResponse = new MessageEmbed()
             .setColor("RED")
@@ -97,23 +124,23 @@ export const SendEther: ICommand = {
           await interaction.editReply({ embeds: [embedResponse] });
           return;
         }
-        const tx = await walletUtils.send(to, amount.toString());
-        if (!tx) {
-          const embed = new MessageEmbed().setColor("RED").addFields({
-            name: "Incorrect Address",
-            value: `Please verify address`,
-          });
-          await interaction.editReply({ embeds: [embed] });
-          return;
-        }
-        const row = new MessageActionRow().addComponents(
-          new MessageButton()
-            .setURL(`${networkObj.explorer}/tx/${tx.hash}`)
-            .setLabel("View transaction on explorer")
-            .setStyle("LINK")
-        );
+        const tx = await TokenUtils.transfer(to, amountInBigNumber)
+        if (tx == false) {
+            const embed = new MessageEmbed().setColor("RED").addFields({
+              name: "Incorrect Address",
+              value: `Please verify address`,
+            });
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          }
+          const row = new MessageActionRow().addComponents(
+            new MessageButton()
+              .setURL(`${networkObj.explorer}/tx/${tx.hash}`)
+              .setLabel("View transaction on explorer")
+              .setStyle("LINK")
+          );
 
-        const embed = new MessageEmbed()
+          const embed = new MessageEmbed()
           .setColor("GREEN")
           .setAuthor({
             name: "Web3Bot",
@@ -127,7 +154,7 @@ export const SendEther: ICommand = {
           .addFields({
             name: "Transaction Successfull🎉🎉",
             value: `${interaction.user.toString()} transferred ${bold(
-              amount.toString() + networkObj.currency
+              amount.toString() + symbol
             )} (${network}) to ${to}`,
           })
           .setTimestamp()
@@ -141,18 +168,11 @@ export const SendEther: ICommand = {
         });
         return;
       } else {
-        // const string = quote()
-        const embed = new MessageEmbed()
-          .setColor("RED")
-          .addFields({
-            name: "No wallet initialized",
-            value: `use ${inlineCode(
-              "/create-wallet"
-            )} to create a new wallet or import existing wallet`,
-          })
-          .setTimestamp()
-          .setFooter({ text: "Powered by AfroLabs" });
-        await interaction.editReply({ embeds: [embed] });
+        await interaction.editReply({
+          content: `${to.toString()} use ${inlineCode(
+            "/create-wallet"
+          )} to create or import a wallet `,
+        });
       }
     } catch (error) {
       console.log(error);
