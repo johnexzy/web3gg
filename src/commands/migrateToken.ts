@@ -40,20 +40,14 @@ export const MigrateToken: ICommand = {
   async execute(interaction) {
     await interaction.deferReply();
     try {
-      const admin_role = interaction.guild!.roles.cache.find(
-        (r) => r.id === process.env.ADMIN_ROLE
-      );
-      console.log((admin_role as Role).id);
-      if (!admin_role) {
-        return;
-      }
+
       if (
         !(interaction.member!.roles as GuildMemberRoleManager).cache.has(
-          admin_role.id
+          process.env.ADMIN_ROLE as string
         )
       ) {
         await interaction.editReply({
-          content: `Only members with ${admin_role.toString()} role can use this command`,
+          content: `You are not authorized to use this command`,
         });
         return;
       }
