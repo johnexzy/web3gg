@@ -1,72 +1,175 @@
 import { SlashCommandBuilder, inlineCode, bold } from "@discordjs/builders";
 import { ICommand } from "../types/types";
-import { MessageEmbed, MessageActionRow, MessageButton, GuildMemberRoleManager } from "discord.js";
+import { utils } from "ethers";
+import {
+  MessageEmbed,
+  MessageActionRow,
+  MessageButton,
+  GuildMemberRoleManager, Role
+} from "discord.js";
 import WalletBuilder from "../common/wallet";
 import UserWallet from "../controllers/Wallets";
 import Cowry from "../common/token";
+import EtherUtils from "../utils/etherUtils";
 const user_wallet = new UserWallet();
 
 export const MigrateToken: ICommand = {
   data: new SlashCommandBuilder()
-  .setName("migrate")
-  .setDescription(`Migrate ${inlineCode("COWRY")} onchain. (10% fee applies)`)
+    .setName("migrate")
+    .setDescription(`Migrate ${inlineCode("COWRY")} onchain. (10% fee applies)`)
 
-  .addNumberOption((option) =>
-    option
-      .setName("amount")
-      .setDescription("The amount of cowries to send, 10% fee applies")
-      .setRequired(true)
-  )
-  .addUserOption((option) =>
-    option
-      .setName("to")
-      .setDescription("Migrate Cowries to this user")
-      .setRequired(true)
-  ),
+    .addNumberOption((option) =>
+      option
+        .setName("amount")
+        .setDescription("The amount of cowries to send, 10% fee applies")
+        .setRequired(true)
+    )
+    .addUserOption((option) =>
+      option
+        .setName("to")
+        .setDescription("Migrate Cowries to this user")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("password")
+        .setDescription("input your password to proceed")
+        .setRequired(true)
+    ),
 
   async execute(interaction) {
     await interaction.deferReply();
     try {
       const admin_role = interaction.guild!.roles.cache.find(
-        (r) => r.name === "ADMIN"
+        (r) => r.id === process.env.ADMIN_ROLE
       );
+      console.log((admin_role as Role).id);
       if (!admin_role) {
-        return
+        return;
       }
-      if (!(interaction.member!.roles as GuildMemberRoleManager).cache.has(admin_role.id)) {
+      if (
+        !(interaction.member!.roles as GuildMemberRoleManager).cache.has(
+          admin_role.id
+        )
+      ) {
         await interaction.editReply({
-          content: `Only members with ${admin_role.toString()} role should use this command`,
+          content: `Only members with ${admin_role.toString()} role can use this command`,
         });
         return;
       }
-
+      const admin_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
+      const password = interaction.options.getString("password") as string;
       const to = interaction.options.getUser("to", true);
       const amount = interaction.options.getNumber("amount", true) * 0.9;
-      const user_pkey = await user_wallet.fromIdGetKey(to.id);
-      if (user_pkey) {
-        const wallet = new WalletBuilder().importFromPrivateKey(user_pkey);
-        const tx = await (new Cowry()).interact(wallet.address, amount.toString());
-        const row = new MessageActionRow().addComponents(
-          new MessageButton()
-            .setURL(`https://rinkeby.etherscan.io/tx/${tx.hash}`)
-            .setLabel("View transaction on etherscan")
-            .setStyle("LINK")
+      const recepient_key = await user_wallet.fromIdGetKey(to.id);
+      if (admin_pkey) {
+        const verifyPassword = await user_wallet.passwordVerify(
+          interaction.user.id,
+          password
         );
+        if (verifyPassword === -1) {
+          let embedResponse = new MessageEmbed()
+            .setColor("RED")
+            .addFields({
+              name: "no password set for this wallet, please set a password",
+              value: `use ${inlineCode("/change-password")}`,
+            })
+            .setTimestamp();
+          await interaction.editReply({ embeds: [embedResponse] });
+          return;
+        }
+        if (verifyPassword === 0) {
+          let embedResponse = new MessageEmbed().setColor("RED").addFields({
+            name: "incorrect password",
+            value: `use ${inlineCode(
+              "/reset-password"
+            )} to recover your password with private key `,
+          });
+          await interaction.editReply({ embeds: [embedResponse] });
+          return;
+        }
+        if (recepient_key) {
+          const recipient_address = new WalletBuilder().getAddressFromKey(
+            recepient_key
+          );
+          const Cw = await new Cowry("goerli");
+          const decimals = parseInt(await Cw.getTokenDecimal());
+          const amountInBigNumber = amount * Math.pow(10, decimals);
 
-        const embed = new MessageEmbed()
-          .setColor("#0099ff")
-          .setTitle(`☑️Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}`)
-          .setDescription(
-            `10% of ${amount / 0.9} was deducted as a migration fee`
-          ).setFooter({text: "Powered by AfroLabs"});
-        // await wait(4000);
-        await interaction.editReply({
-          embeds: [embed],
-          components: [row],
-        });
+          const tokenBalance =
+            parseInt((await Cw.getTokenBalance()).toString()) /
+            Math.pow(10, decimals);
+          // check for gas fee
+          const gasPrice = await Cw.estimateGasPriceTransfer();
+          const etherUtils = new EtherUtils(
+            new WalletBuilder().masterWallet(),
+            "goerli"
+          );
+          const coinBalance = await etherUtils.balance();
+
+          if (!utils.parseEther(coinBalance).gt(gasPrice)) {
+            const embed = new MessageEmbed()
+              .setColor("RED")
+              .addFields({
+                name: "Insufficient Fund to pay gas",
+                value: `Minimum of ${gasPrice.toString()} is required`,
+              })
+              .setTimestamp();
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          }
+          if (!(tokenBalance >= amount)) {
+            const embed = new MessageEmbed()
+              .setColor("RED")
+              .addFields({
+                name: "Insufficient Amount to transfer",
+                value: `amount to send exceeds balance in master wallet`,
+              })
+              .setTimestamp();
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          }
+          const tx = await Cw.transfer(recipient_address, amountInBigNumber);
+
+          if (tx == false) {
+            const embed = new MessageEmbed().setColor("RED").addFields({
+              name: "Unexpected Error Occurred",
+              value: `Please contact AfroLab's developers`,
+            });
+            await interaction.editReply({ embeds: [embed] });
+            return;
+          }
+          const row = new MessageActionRow().addComponents(
+            new MessageButton()
+              .setURL(`https://rinkeby.etherscan.io/tx/${tx.hash}`)
+              .setLabel("View transaction on etherscan")
+              .setStyle("LINK")
+          );
+
+          const embed = new MessageEmbed()
+            .setColor("#0099ff")
+            .setTitle(
+              `☑️Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}`
+            )
+            .setDescription(
+              `10% of ${amount / 0.9} was deducted as a migration fee`
+            )
+            .setFooter({ text: "Powered by AfroLabs" });
+          // await wait(4000);
+          await interaction.editReply({
+            embeds: [embed],
+            components: [row],
+          });
+        } else {
+          await interaction.editReply({
+            content: `${to.toString()} use ${inlineCode(
+              "/create-wallet"
+            )} to create or import a wallet `,
+          });
+        }
       } else {
         await interaction.editReply({
-          content: `${to.toString()} use ${inlineCode(
+          content: `${interaction.user.toString()} use ${inlineCode(
             "/create-wallet"
           )} to create or import a wallet `,
         });
@@ -74,7 +177,7 @@ export const MigrateToken: ICommand = {
     } catch (error) {
       console.log(error);
       await interaction.editReply({
-        content: "There was an error while executing this command!"
+        content: "There was an error while executing this command!",
       });
     }
   },

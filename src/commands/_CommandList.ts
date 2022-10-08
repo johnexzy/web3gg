@@ -7,7 +7,7 @@ import { Address } from "./address";
 import { AddToken } from "./addToken";
 import { SendEther } from "./sendEther";
 import { TipEther } from "./tipEther";
-// import { MigrateToken } from "./migrateToken";
+import { MigrateToken } from "./migrateToken";
 import { TransferToken } from "./transferToken";
 import { TipToken } from "./tipToken";
 import { SetPassword } from "./setPassword";
@@ -27,5 +27,5 @@ export const CommandList: ICommand[] = [
   SetPassword,
   ForgotPassword,
   ExportKey,
-  // MigrateToken
+  MigrateToken
 ];
