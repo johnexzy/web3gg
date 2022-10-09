@@ -86,6 +86,7 @@ export const MigrateToken: ICommand = {
           const recipient_address = new WalletBuilder().getAddressFromKey(
             recepient_key
           );
+          
           const Cw = await new Cowry("goerli");
           const decimals = parseInt(await Cw.getTokenDecimal());
           const amountInBigNumber = amount * Math.pow(10, decimals);
