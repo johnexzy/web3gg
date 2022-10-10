@@ -93,7 +93,7 @@ export const MigrateToken: ICommand = {
           const tokenBalance =
             parseInt((await Cw.getTokenBalance()) as string) /
             Math.pow(10, decimals);
-          console.log(tokenBalance)
+          console.log(tokenBalance) // 10,000,000
           // check for gas fee
           const gasPrice = await Cw.estimateGasPriceTransfer();
           const etherUtils = new EtherUtils(
@@ -125,7 +125,7 @@ export const MigrateToken: ICommand = {
             return;
           }
           const tx = await Cw.transfer(recipient_address, amountInBigNumber);
-
+          console.log(tx)
           if (tx == false) {
             const embed = new MessageEmbed().setColor("RED").addFields({
               name: "Unexpected Error Occurred",
