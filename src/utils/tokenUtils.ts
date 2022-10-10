@@ -48,14 +48,14 @@ export default class TokenUtils extends Provider {
   }
   async transfer(
     address: string,
-    amount: number
+    amount: string
   ): Promise<TransactionResponse | false> {
     if (!utils.isAddress(address)) {
       return false;
     }
     const tx: TransactionResponse = await (await this.connectedContract()).transfer(
       address,
-      BigNumber.from(amount)
+      amount
     );
     await tx.wait();
     return tx;

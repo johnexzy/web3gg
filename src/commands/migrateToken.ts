@@ -124,7 +124,7 @@ export const MigrateToken: ICommand = {
             await interaction.editReply({ embeds: [embed] });
             return;
           }
-          const tx = await Cw.transfer(recipient_address, amountInBigNumber);
+          const tx = await Cw.transfer(recipient_address, amountInBigNumber.toString());
           console.log(tx)
           if (tx == false) {
             const embed = new MessageEmbed().setColor("RED").addFields({
