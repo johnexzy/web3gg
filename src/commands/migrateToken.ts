@@ -144,10 +144,10 @@ export const MigrateToken: ICommand = {
           const embed = new MessageEmbed()
             .setColor("#0099ff")
             .setTitle(
-              `☑️Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}`
+              `☑️Migration Successfull`
             )
             .setDescription(
-              `10% of ${amount / 0.9} was deducted as a migration fee`
+              `Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}. 10% of ${amount / 0.9} was deducted as a migration fee`
             )
             .setFooter({ text: "Powered by AfroLabs" });
           // await wait(4000);
