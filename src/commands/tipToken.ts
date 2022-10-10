@@ -155,7 +155,7 @@ export const TipToken: ICommand = {
           await interaction.editReply({ embeds: [embedResponse] });
           return;
         }
-        const tx = await TokenUtils.transfer(addr_recipient, amountInBigNumber);
+        const tx = await TokenUtils.transfer(addr_recipient, amountInBigNumber.toString());
         if (tx == false) {
           const embed = new MessageEmbed().setColor("RED").addFields({
             name: "Incorrect Address",
