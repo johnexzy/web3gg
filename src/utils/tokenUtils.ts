@@ -40,10 +40,10 @@ export default class TokenUtils extends Provider {
   async getTokenDecimal(): Promise<string> {
     return (await this.connectedContract()).decimals();
   }
-  async getTokenBalance(): Promise<BigNumber> {
+  async getTokenBalance(): Promise<BigNumber | string> {
     return (await this.connectedContract()).balanceOf(this.wallet.address);
   }
-  async getTotalSupply(): Promise<BigNumber> {
+  async getTotalSupply(): Promise<BigNumber | string> {
     return (await this.connectedContract()).totalSupply();
   }
   async transfer(

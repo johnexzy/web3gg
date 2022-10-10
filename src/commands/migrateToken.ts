@@ -89,9 +89,9 @@ export const MigrateToken: ICommand = {
           const Cw = await new Cowry("goerli");
           const decimals = parseInt(await Cw.getTokenDecimal());
           const amountInBigNumber = amount * Math.pow(10, decimals);
-
+          console.log(amountInBigNumber)
           const tokenBalance =
-            parseInt((await Cw.getTokenBalance()).toString()) /
+            parseInt((await Cw.getTokenBalance()) as string) /
             Math.pow(10, decimals);
           // check for gas fee
           const gasPrice = await Cw.estimateGasPriceTransfer();
