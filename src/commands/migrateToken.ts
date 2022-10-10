@@ -38,7 +38,7 @@ export const MigrateToken: ICommand = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
     try {
 
       if (
@@ -152,6 +152,9 @@ export const MigrateToken: ICommand = {
             .setFooter({ text: "Powered by AfroLabs" });
           // await wait(4000);
           await interaction.editReply({
+            content: "Migration Successfull Successfull",
+          });
+          await interaction.channel?.send({
             embeds: [embed],
             components: [row],
           });
@@ -163,7 +166,7 @@ export const MigrateToken: ICommand = {
           });
         }
       } else {
-        await interaction.editReply({
+        await interaction.editReply({ 
           content: `${interaction.user.toString()} use ${inlineCode(
             "/create-wallet"
           )} to create or import a wallet `,
