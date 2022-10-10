@@ -136,7 +136,7 @@ export const TransferToken: ICommand = {
           await interaction.editReply({ embeds: [embedResponse] });
           return;
         }
-        const tx = await TokenUtils.transfer(to, amountInBigNumber)
+        const tx = await TokenUtils.transfer(to, amountInBigNumber.toString())
         if (tx == false) {
             const embed = new MessageEmbed().setColor("RED").addFields({
               name: "Incorrect Address",
