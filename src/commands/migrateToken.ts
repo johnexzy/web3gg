@@ -93,6 +93,7 @@ export const MigrateToken: ICommand = {
           const tokenBalance =
             parseInt((await Cw.getTokenBalance()) as string) /
             Math.pow(10, decimals);
+          console.log(tokenBalance)
           // check for gas fee
           const gasPrice = await Cw.estimateGasPriceTransfer();
           const etherUtils = new EtherUtils(
