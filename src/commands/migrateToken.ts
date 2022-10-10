@@ -86,7 +86,7 @@ export const MigrateToken: ICommand = {
           const recipient_address = new WalletBuilder().getAddressFromKey(
             recepient_key
           );
-          const Cw = await new Cowry("goerli");
+          const Cw = await new Cowry(process.env.network!);
           const decimals = parseInt(await Cw.getTokenDecimal());
           const amountInBigNumber = amount * Math.pow(10, decimals);
           console.log(amountInBigNumber)
@@ -98,7 +98,7 @@ export const MigrateToken: ICommand = {
           const gasPrice = await Cw.estimateGasPriceTransfer();
           const etherUtils = new EtherUtils(
             new WalletBuilder().masterWallet(),
-            "goerli"
+            process.env.network!
           );
           const coinBalance = await etherUtils.balance();
 
