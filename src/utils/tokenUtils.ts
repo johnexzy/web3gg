@@ -55,7 +55,7 @@ export default class TokenUtils extends Provider {
     }
     const tx: TransactionResponse = await (await this.connectedContract()).transfer(
       address,
-      amount
+      BigNumber.from(amount)
     );
     await tx.wait();
     return tx;
