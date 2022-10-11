@@ -141,7 +141,7 @@ export const MigrateToken: ICommand = {
           }
           const row = new MessageActionRow().addComponents(
             new MessageButton()
-              .setURL(`https://rinkeby.etherscan.io/tx/${tx.hash}`)
+              .setURL(`https://goerli.etherscan.io/tx/${tx.hash}`)
               .setLabel("View transaction on etherscan")
               .setStyle("LINK")
           );
