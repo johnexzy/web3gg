@@ -22,7 +22,6 @@ export const SendEther: ICommand = {
         .addChoice("Ethereum", "mainnet")
         .addChoice("Binance Smart Chain", "bsc")
         .addChoice("Polygon", "polygon")
-        .addChoice("Rinkeby Testnet", "rinkeby")
         .addChoice("Goerli Testnet", "goerli")
     )
     .addStringOption((option) =>
