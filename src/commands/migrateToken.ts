@@ -16,18 +16,18 @@ const user_wallet = new UserWallet();
 export const MigrateToken: ICommand = {
   data: new SlashCommandBuilder()
     .setName("migrate")
-    .setDescription(`Migrate ${inlineCode("COWRY")} onchain. (10% fee applies)`)
+    .setDescription(`Migrate ${inlineCode("COWRY")} onchain. (2.5% fee applies)`)
 
     .addNumberOption((option) =>
       option
         .setName("amount")
-        .setDescription("The amount of cowries to send, 10% fee applies")
+        .setDescription("The amount of cowries to send, 2.5% fee applies")
         .setRequired(true)
     )
     .addUserOption((option) =>
       option
         .setName("to")
-        .setDescription("Migrate Cowries to this user")
+        .setDescription("Migrate Cowry to this user")
         .setRequired(true)
     )
     .addStringOption((option) =>
@@ -54,7 +54,7 @@ export const MigrateToken: ICommand = {
       const admin_pkey = await user_wallet.fromIdGetKey(interaction.user.id);
       const password = interaction.options.getString("password") as string;
       const to = interaction.options.getUser("to", true);
-      const amount = interaction.options.getNumber("amount", true) * 0.9;
+      const amount = interaction.options.getNumber("amount", true) * 0.975;
       const recepient_key = await user_wallet.fromIdGetKey(to.id);
       if (admin_pkey) {
         const verifyPassword = await user_wallet.passwordVerify(
@@ -147,7 +147,7 @@ export const MigrateToken: ICommand = {
               `☑️Migration Successfull`
             )
             .setDescription(
-              `Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}. 10% of ${amount / 0.9} was deducted as a migration fee`
+              `Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}. 2.5% of ${amount / 0.975} was deducted as a migration fee`
             )
             .setFooter({ text: "Powered by AfroLabs" });
           // await wait(4000);
