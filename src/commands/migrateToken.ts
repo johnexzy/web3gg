@@ -152,8 +152,8 @@ export const MigrateToken: ICommand = {
             .addField(
               "Message",
               `Migrated ${amount} ${inlineCode("COWRY")} to ${
-                to.tag
-              }. 2.5% of ${amount / 0.975} was deducted as a migration fee`
+                to.toString()
+              }. - 2.5% of ${amount / 0.975} was deducted as a migration fee`
             )
             .setFooter({ text: "Powered by AfroLabs" });
           // await wait(4000);
