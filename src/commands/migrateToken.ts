@@ -5,7 +5,8 @@ import {
   MessageEmbed,
   MessageActionRow,
   MessageButton,
-  GuildMemberRoleManager, Role
+  GuildMemberRoleManager,
+  Role,
 } from "discord.js";
 import WalletBuilder from "../common/wallet";
 import UserWallet from "../controllers/Wallets";
@@ -16,7 +17,9 @@ const user_wallet = new UserWallet();
 export const MigrateToken: ICommand = {
   data: new SlashCommandBuilder()
     .setName("migrate")
-    .setDescription(`Migrate ${inlineCode("COWRY")} onchain. (2.5% fee applies)`)
+    .setDescription(
+      `Migrate ${inlineCode("COWRY")} onchain. (2.5% fee applies)`
+    )
 
     .addNumberOption((option) =>
       option
@@ -40,7 +43,6 @@ export const MigrateToken: ICommand = {
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true });
     try {
-
       if (
         !(interaction.member!.roles as GuildMemberRoleManager).cache.has(
           process.env.ADMIN_ROLE as string
@@ -89,11 +91,11 @@ export const MigrateToken: ICommand = {
           const Cw = await new Cowry(process.env.network!);
           const decimals = parseInt(await Cw.getTokenDecimal());
           const amountInBigNumber = amount * Math.pow(10, decimals);
-          console.log(amountInBigNumber)
+          console.log(amountInBigNumber);
           const tokenBalance =
             parseInt((await Cw.getTokenBalance()) as string) /
             Math.pow(10, decimals);
-          console.log(tokenBalance) // 10,000,000
+          console.log(tokenBalance); // 10,000,000
           // check for gas fee
           const gasPrice = await Cw.estimateGasPriceTransfer();
           const etherUtils = new EtherUtils(
@@ -124,8 +126,11 @@ export const MigrateToken: ICommand = {
             await interaction.editReply({ embeds: [embed] });
             return;
           }
-          const tx = await Cw.transfer(recipient_address, amountInBigNumber.toString());
-          console.log(tx)
+          const tx = await Cw.transfer(
+            recipient_address,
+            amountInBigNumber.toString()
+          );
+          console.log(tx);
           if (tx == false) {
             const embed = new MessageEmbed().setColor("RED").addFields({
               name: "Unexpected Error Occurred",
@@ -143,11 +148,12 @@ export const MigrateToken: ICommand = {
 
           const embed = new MessageEmbed()
             .setColor("#0099ff")
-            .setTitle(
-              `☑️Migration Successfull`
-            )
-            .setDescription(
-              `Migrated ${amount} ${inlineCode("COWRY")} to ${to.tag}. 2.5% of ${amount / 0.975} was deducted as a migration fee`
+            .setTitle(`☑️Migration Successfull`)
+            .addField(
+              "Message",
+              `Migrated ${amount} ${inlineCode("COWRY")} to ${
+                to.tag
+              }. 2.5% of ${amount / 0.975} was deducted as a migration fee`
             )
             .setFooter({ text: "Powered by AfroLabs" });
           // await wait(4000);
@@ -166,7 +172,7 @@ export const MigrateToken: ICommand = {
           });
         }
       } else {
-        await interaction.editReply({ 
+        await interaction.editReply({
           content: `${interaction.user.toString()} use ${inlineCode(
             "/create-wallet"
           )} to create or import a wallet `,
